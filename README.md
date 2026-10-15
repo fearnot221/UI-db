@@ -3,6 +3,8 @@
 個人 UI 效果與工具資料庫 —— db 同時是 **dashboard** 也是 **database**。
 每筆收藏都有：可即時播放的 demo、中英文名稱、使用情境標籤，以及可直接貼給 AI（Claude / Codex）的提示詞。
 
+線上版：https://fearnot221.github.io/UI-db/
+
 ## 啟動
 
 ```bash
