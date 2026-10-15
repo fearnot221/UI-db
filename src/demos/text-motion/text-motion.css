@@ -1,0 +1,428 @@
+/* 文字動態 40 招 — demo 樣式
+   舞台 .stage 提供：--accent（組別主色）、--fg、--bg、container-type:size（可用 cqw / cqh） */
+
+.stage b, .stage span { font-weight: 900; }
+.tm-center { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-center > * { grid-area: 1 / 1; }
+
+/* ── 共用跑馬燈 ── */
+.tm-mq { overflow: hidden; white-space: nowrap; width: 100%; }
+.tm-mq-track { display: inline-flex; animation: tm-mq var(--dur) linear infinite; }
+.tm-mq-track > span { padding-right: .3em; }
+@keyframes tm-mq { to { transform: translateX(-50%); } }
+
+.tm-vmq { overflow: hidden; height: 100%; }
+.tm-vmq-track { display: flex; flex-direction: column; animation: tm-vmq var(--dur) linear infinite; }
+.tm-vmq-track > span { writing-mode: vertical-rl; text-orientation: upright; padding-bottom: .3em; }
+@keyframes tm-vmq { to { transform: translateY(-50%); } }
+
+/* ═════════ IMPACT ═════════ */
+
+/* 01 Word Burst */
+.tm-burst { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-burst > * { grid-area: 1 / 1; }
+.tm-burst b { font-size: 44cqh; color: var(--accent); animation: tm-burst 1.9s cubic-bezier(.3,1.6,.5,1) infinite; }
+.tm-burst-rays { position: relative; width: 0; height: 0; }
+.tm-burst-rays i {
+  position: absolute; left: -.6cqh; top: 0; width: 1.2cqh; height: 12cqh; border-radius: 1cqh; background: #fff;
+  transform-origin: 50% 0; transform: rotate(var(--a)) translateY(18cqh) scaleY(0);
+  animation: tm-ray 1.9s ease-out infinite;
+}
+@keyframes tm-burst {
+  0% { transform: scale(0); opacity: 0; }
+  12% { opacity: 1; }
+  30%, 82% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.05); opacity: 0; }
+}
+@keyframes tm-ray {
+  0%, 8% { transform: rotate(var(--a)) translateY(16cqh) scaleY(0); opacity: 1; }
+  22% { transform: rotate(var(--a)) translateY(26cqh) scaleY(1); opacity: 1; }
+  40%, 100% { transform: rotate(var(--a)) translateY(40cqh) scaleY(0); opacity: 0; }
+}
+
+/* 02 Letter Sequence */
+.stage .tm-slam { position: absolute; inset: 0; display: grid; place-items: center; font-size: 62cqh; color: var(--fg); animation: tm-slam .32s cubic-bezier(.2,.9,.3,1.3) both; }
+@keyframes tm-slam { from { transform: scale(2.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* 03 Text Stamp */
+.tm-stamp-wrap { position: absolute; inset: 0; display: grid; place-items: center; animation: tm-shake 3.2s infinite; }
+.tm-stamp {
+  grid-area: 1 / 1; font-size: 15cqh; letter-spacing: .1em; color: #d6343c; border: 1.1cqh solid currentColor; border-radius: 2cqh;
+  padding: .15em .35em .15em .45em; opacity: 0;
+  translate: var(--x) var(--y);
+  animation: tm-stamp 3.2s cubic-bezier(.5,0,.6,1.4) infinite; animation-delay: calc(var(--i) * .45s);
+}
+@keyframes tm-stamp {
+  0% { transform: scale(3) rotate(calc(var(--r) - 14deg)); opacity: 0; }
+  7% { transform: scale(1) rotate(var(--r)); opacity: 1; }
+  72% { transform: scale(1) rotate(var(--r)); opacity: 1; }
+  80%, 100% { transform: scale(1) rotate(var(--r)); opacity: 0; }
+}
+@keyframes tm-shake {
+  0%, 6%, 9%, 20%, 23%, 34%, 37%, 100% { transform: none; }
+  7%, 21%, 35% { transform: translate(.8cqw, .6cqh); }
+  8%, 22%, 36% { transform: translate(-.6cqw, -.5cqh); }
+}
+
+/* 04 Punch Zoom */
+.tm-punch { font-size: 44cqh; color: #fff; animation: tm-punch 2s cubic-bezier(.15,.8,.25,1.1) infinite; animation-delay: calc(var(--i) * 45ms); }
+.tm-punch.ghost { color: var(--accent); opacity: calc(.75 - var(--i) * .12); }
+@keyframes tm-punch {
+  0% { transform: scale(.04); filter: blur(6px); opacity: 0; }
+  28% { transform: scale(1.12); filter: blur(0); opacity: 1; }
+  36%, 82% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* 05 Kinetic Stack */
+.tm-stack { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.02; }
+.tm-stack b { font-size: var(--s); color: #fff; animation: tm-stack 3.2s cubic-bezier(.2,.9,.3,1.15) infinite; animation-delay: calc(var(--i) * .3s); opacity: 0; }
+.tm-stack b:nth-child(2) { color: var(--accent); }
+@keyframes tm-stack {
+  0% { transform: translate(var(--fx), var(--fy)) scale(.6); opacity: 0; }
+  12%, 74% { transform: none; opacity: 1; }
+  86%, 100% { transform: scale(.9); opacity: 0; }
+}
+
+/* 06 Stretch Text */
+.tm-stretch { position: absolute; inset: 0; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 14cqh; }
+.tm-stretch span { font-size: 36cqh; line-height: 1; color: var(--fg); transform-origin: 50% 100%; animation: tm-stretch 1.8s cubic-bezier(.4,1.6,.5,1) infinite; animation-delay: calc(var(--i) * .12s); }
+@keyframes tm-stretch {
+  0%, 60%, 100% { transform: scale(1, 1); }
+  20% { transform: scale(.88, 1.85); }
+  38% { transform: scale(1.08, .86); }
+}
+
+/* 07 Text Zoom Through */
+.stage .tm-zoomthru { position: absolute; inset: 0; display: grid; place-items: center; font-size: 44cqh; color: var(--accent); animation: tm-zoomthru 1.7s cubic-bezier(.7,0,.9,.4) both; }
+@keyframes tm-zoomthru {
+  0% { transform: scale(.5); opacity: 0; }
+  14% { transform: scale(1); opacity: 1; }
+  52% { transform: scale(1.12); }
+  100% { transform: scale(48); }
+}
+
+/* 08 Text Squeeze */
+.stage .tm-squeeze { position: absolute; inset: 0; display: grid; place-items: center; font-size: 44cqh; color: var(--accent); transform-origin: 50% 72%; animation: tm-squeeze 1.3s ease-in-out both; }
+@keyframes tm-squeeze {
+  0% { transform: scale(1.5, .2); }
+  16% { transform: scale(.82, 1.3); }
+  30% { transform: scale(1.1, .9); }
+  42%, 72% { transform: scale(1); }
+  88% { transform: scale(1.45, .5); }
+  100% { transform: scale(1.6, 0); }
+}
+
+/* ═════════ FLOW ═════════ */
+
+/* 09 Huge Text Scroll */
+.tm-huge { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; }
+.tm-huge .big { font-size: 66cqh; line-height: 1; color: #fff; font-weight: 900; }
+.tm-huge .strip { background: var(--accent); color: var(--ink); font-size: 9cqh; padding: 1.5cqh 0; font-weight: 900; }
+
+/* 10 Vertical Typography */
+.tm-vtype { position: absolute; inset: 0; display: flex; justify-content: space-evenly; font-family: "Noto Serif TC", serif; }
+.tm-vtype .tm-vmq span { font-weight: 900; }
+.tm-vtype .rush { font-size: 13cqh; color: var(--ink); }
+.tm-vtype .calm { font-size: 22cqh; color: var(--ink); }
+
+/* 11 Repeating Text */
+.tm-repeat { position: absolute; inset: -4cqh -4cqw; display: grid; grid-template-columns: repeat(9, 1fr); align-content: space-evenly; }
+.tm-repeat span { font-size: 9.5cqh; text-align: center; color: #d6d6d6; animation: tm-wave 2.4s ease-in-out infinite; animation-delay: calc(var(--d) * -.14s); }
+@keyframes tm-wave { 0%, 100% { color: #dadada; } 45% { color: var(--ink); } 55% { color: var(--accent-deep, var(--ink)); } }
+
+/* 12 Diagonal Text Bands */
+.tm-bands { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-bands .band { grid-area: 1 / 1; width: 140%; font-size: 15cqh; padding: 1.5cqh 0; font-weight: 900; }
+.tm-bands .a { background: var(--accent); color: var(--ink); transform: translateY(-14cqh) rotate(-8deg); }
+.tm-bands .b { background: #fff; color: var(--ink); transform: translateY(18cqh) rotate(5deg); }
+
+/* 13 Text Ribbon */
+.tm-ribbon { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tm-ribbon path { fill: none; }
+.tm-ribbon .band { fill: none; stroke: #fff; stroke-width: 30; }
+.tm-ribbon text { font-size: 18px; font-weight: 900; fill: var(--ink); }
+
+/* 14 Marquee */
+.tm-marquee { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; color: var(--ink); }
+.tm-marquee .tm-mq { border-bottom: .5cqh solid var(--ink); line-height: 1.15; }
+.tm-marquee .r1 { font-size: 14cqh; font-weight: 700; }
+.tm-marquee .r2 { font-size: 24cqh; font-weight: 900; }
+.tm-marquee .r3 { font-size: 13cqh; font-family: "Noto Serif TC", serif; }
+.tm-marquee .r4 { font-size: 21cqh; font-weight: 900; border: 0; }
+.tm-marquee .r3 span { font-weight: 700; }
+.tm-marquee .r1 span { font-weight: 500; }
+
+/* 15 Parallax Columns */
+.tm-parallax { position: absolute; inset: 0; font-family: "Noto Serif TC", serif; }
+.tm-parallax .layer { position: absolute; inset: 0; display: flex; justify-content: space-around; }
+.tm-parallax .back { font-size: 9cqh; color: #e2e2e2; }
+.tm-parallax .mid { font-size: 15cqh; color: #a9a9a9; }
+.tm-parallax .front { font-size: 30cqh; color: var(--ink); }
+
+/* 16 Tape Cross */
+.tm-tape { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-tape .tape {
+  grid-area: 1 / 1; width: 150%; font-size: 12cqh; color: var(--ink); padding: 2cqh 0;
+  background:
+    repeating-linear-gradient(-45deg, var(--ink) 0 2cqh, transparent 0 4cqh) top / 100% 1.4cqh no-repeat,
+    repeating-linear-gradient(-45deg, var(--ink) 0 2cqh, transparent 0 4cqh) bottom / 100% 1.4cqh no-repeat,
+    var(--accent);
+  box-shadow: 0 1cqh 3cqh rgba(0,0,0,.4);
+}
+.tm-tape .a { transform: rotate(14deg); }
+.tm-tape .b { transform: rotate(-14deg); }
+
+/* ═════════ DEPTH ═════════ */
+
+/* 17 Text Tunnel */
+.tm-tunnel { font-size: 30cqh; color: transparent; -webkit-text-stroke: .5cqh var(--accent); animation: tm-tunnel 3.5s cubic-bezier(.5,0,1,1) infinite; animation-delay: calc(var(--i) * -.5s); opacity: 0; }
+.tm-tunnel.outline { -webkit-text-stroke-color: #fff; }
+@keyframes tm-tunnel {
+  0% { transform: scale(.08); opacity: 0; }
+  15% { opacity: 1; }
+  55% { opacity: .9; }
+  100% { transform: scale(6); opacity: 0; }
+}
+
+/* 18 Text Corridor — 同一個「地板」轉 0/90/180/270 度拼成四面 */
+.tm-corridor { position: absolute; inset: 0; perspective: 34cqh; overflow: hidden; }
+.tm-corridor .face { position: absolute; left: 50%; top: 50%; width: 100cqw; height: 100cqw; margin: -50cqw 0 0 -50cqw; transform-style: preserve-3d; transform: rotate(var(--r)); }
+.tm-corridor .plane { position: absolute; top: 100%; left: 0; width: 100%; height: 900cqh; overflow: hidden; transform-origin: 50% 0; transform: rotateX(-90deg); background: color-mix(in srgb, var(--accent) 16%, #1d1d1d); }
+.tm-corridor .flow { display: flex; flex-direction: column; animation: tm-corridor-flow 5s linear infinite; }
+.tm-corridor .flow span { font-size: 9cqw; color: var(--accent); white-space: nowrap; text-align: center; line-height: 1.4; }
+.tm-corridor .face:nth-child(even) .flow span { color: #fff; opacity: .85; }
+.tm-corridor .end { position: absolute; inset: 0; display: grid; place-items: center; font-size: 7cqh; color: #fff; }
+@keyframes tm-corridor-flow { to { transform: translateY(-50%); } }
+
+/* 19 Text Cylinder */
+.tm-cylinders { position: absolute; inset: 0; display: flex; justify-content: space-evenly; align-items: center; perspective: 200cqh; }
+.tm-cylinders .cyl { position: relative; width: 16cqh; height: 16cqh; transform-style: preserve-3d; animation: tm-cyl 4s linear infinite; animation-direction: normal; }
+.tm-cylinders .cyl[style*="-1"] { animation-direction: reverse; }
+.tm-cylinders .cyl span {
+  position: absolute; inset: 0; display: grid; place-items: center; font-size: 13cqh; color: var(--ink); background: var(--bg);
+  transform: rotateX(calc(var(--k) * 45deg)) translateZ(19.3cqh); backface-visibility: hidden;
+}
+.tm-cylinders .cyl span.box { background: var(--accent); color: #fff; }
+@keyframes tm-cyl { to { transform: rotateX(360deg); } }
+
+/* 20 Text Vortex */
+@property --tw { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+.tm-vortex { position: absolute; inset: 0; display: grid; place-items: center; animation: tm-vortex 3.2s ease-in-out infinite; }
+.tm-vortex b {
+  grid-area: 1 / 1; font-size: 40cqh; color: var(--accent);
+  clip-path: inset(var(--t) -50% var(--b) -50%);
+  transform: rotate(calc(var(--tw) * var(--k))) scale(calc(1 - var(--k) * var(--k) * .002 * var(--tw) / 1deg));
+}
+@keyframes tm-vortex {
+  0%, 15% { --tw: 0deg; transform: rotate(0); }
+  55% { --tw: 22deg; transform: rotate(-30deg) scale(.9); }
+  100% { --tw: 0deg; transform: rotate(-360deg); }
+}
+
+/* 21 Ring Text Tunnel */
+.tm-rings { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-rings .ring { grid-area: 1 / 1; position: relative; width: 0; height: 0; animation: tm-ring 4s linear infinite; animation-delay: calc(var(--i) * -.8s); opacity: 0; }
+.tm-rings .ring span { position: absolute; left: -2.5cqh; top: -3cqh; width: 5cqh; text-align: center; font-size: 5cqh; color: var(--accent); transform: rotate(var(--a)) translateY(-20cqh); }
+.tm-rings .ring:nth-child(odd) span { color: #fff; }
+@keyframes tm-ring {
+  0% { transform: scale(.1) rotate(0); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: .9; }
+  100% { transform: scale(3.6) rotate(80deg); opacity: 0; }
+}
+
+/* 22 Text Orbit */
+.tm-orbit-scene { position: absolute; inset: 0; display: grid; place-items: center; perspective: 120cqh; transform-style: preserve-3d; }
+.tm-orbit-scene > * { grid-area: 1 / 1; }
+.tm-orbit-scene .title { font-size: 34cqh; color: var(--ink); transform: translateZ(0); }
+@property --o { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+.tm-orbit { position: relative; width: 0; height: 0; transform-style: preserve-3d; transform: rotateX(74deg); animation: tm-orbit 8s linear infinite; }
+.tm-orbit .path { position: absolute; left: -46cqh; top: -46cqh; width: 92cqh; height: 92cqh; border-radius: 50%; border: .5cqh dashed color-mix(in srgb, var(--ink) 55%, transparent); }
+/* 每個字先繞圈，再轉回正面朝向鏡頭（billboard） */
+.tm-orbit span {
+  position: absolute; left: -2.5cqh; top: -3cqh; width: 5cqh; text-align: center; font-size: 7cqh; color: #fff;
+  transform: rotateZ(calc(var(--a) + var(--o))) translateY(-46cqh) rotateZ(calc(-1 * (var(--a) + var(--o)))) rotateX(-74deg);
+}
+@keyframes tm-orbit { to { --o: 360deg; } }
+
+/* 23 Text Cube */
+.tm-cube-scene { position: absolute; inset: 0; display: grid; place-items: center; perspective: 150cqh; }
+.tm-cube { position: relative; width: 44cqh; height: 44cqh; transform-style: preserve-3d; animation: tm-cube 6s cubic-bezier(.6,-.3,.3,1.3) infinite; }
+.tm-cube span {
+  position: absolute; inset: 0; display: grid; place-items: center; font-size: 28cqh; color: #fff; background: var(--accent);
+  transform: rotateX(calc(var(--i) * -90deg)) translateZ(22cqh); border: .4cqh solid rgba(0,0,0,.08);
+}
+.tm-cube span:nth-child(even) { background: var(--ink); color: var(--accent); }
+@keyframes tm-cube {
+  0%, 18% { transform: rotateX(0); }
+  25%, 43% { transform: rotateX(90deg); }
+  50%, 68% { transform: rotateX(180deg); }
+  75%, 93% { transform: rotateX(270deg); }
+  100% { transform: rotateX(360deg); }
+}
+
+/* 24 Extrude Text */
+.tm-extrude-scene { position: absolute; inset: 0; display: grid; place-items: center; perspective: 140cqh; }
+.tm-extrude { display: grid; transform-style: preserve-3d; animation: tm-extrude 5s cubic-bezier(.6,0,.4,1) infinite; }
+.tm-extrude b {
+  grid-area: 1 / 1; font-size: 38cqh;
+  color: color-mix(in srgb, var(--accent) calc(100% - var(--l) * 60%), #000);
+  transform: translateZ(calc(var(--z) * -.55cqh));
+}
+.tm-extrude b.face { color: #fff4ee; text-shadow: 0 0 .6cqh rgba(0,0,0,.25); }
+@keyframes tm-extrude {
+  0%, 10% { transform: rotateY(-25deg) rotateX(10deg); }
+  60% { transform: rotateY(335deg) rotateX(-8deg); }
+  100% { transform: rotateY(335deg) rotateX(10deg); }
+}
+
+/* ═════════ SWITCH ═════════ */
+
+/* 25 Split Flap */
+.tm-flaps { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 2.5cqh; perspective: 80cqh; }
+.tm-flaps .flap {
+  position: relative; width: 30cqh; height: 38cqh; border-radius: 2.4cqh; background: linear-gradient(#f4f4f0 0 50%, #e4e4de 50%);
+  display: grid; place-items: center; overflow: hidden; box-shadow: 0 .8cqh 0 rgba(0,0,0,.35);
+}
+.tm-flaps .flap::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: .5cqh; background: #1d1d1d; }
+.tm-flaps .flap span { font-size: 26cqh; color: #1b1b1b; line-height: 1; }
+.tm-flaps .flap span.flip { animation: tm-flip .07s linear; }
+@keyframes tm-flip { from { transform: rotateX(80deg); filter: brightness(.6); } to { transform: none; } }
+
+/* 26 Flip Cards */
+.tm-cards { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 3cqh; perspective: 120cqh; }
+.tm-cards .card { position: relative; width: 34cqh; height: 40cqh; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.4,1.5,.5,1); }
+.tm-cards .card span {
+  position: absolute; inset: 0; display: grid; place-items: center; border-radius: 3cqh; background: var(--ink); color: var(--accent);
+  font-size: 26cqh; backface-visibility: hidden;
+}
+.tm-cards .card .back { transform: rotateY(180deg); }
+
+/* 27 Typewriter */
+.tm-type { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 18cqh; color: var(--ink); font-family: "Noto Serif TC", serif; }
+.tm-type .txt { font-weight: 700; white-space: pre; }
+.tm-type .caret { display: inline-block; width: .8cqh; height: 22cqh; margin-left: 1cqh; background: var(--ink); animation: tm-caret .9s steps(1) infinite; }
+@keyframes tm-caret { 50% { opacity: 0; } }
+
+/* 28 Slot Text */
+.tm-slots { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 2.5cqh; }
+.tm-slots .reel {
+  height: 1.25em; width: 1.4em; overflow: hidden; font-size: 30cqh; border-radius: .14em; background: #fff;
+  box-shadow: inset 0 .35em .3em -.25em rgba(0,0,0,.45), inset 0 -.35em .3em -.25em rgba(0,0,0,.45);
+}
+.tm-slots .strip span { display: block; height: 1.25em; line-height: 1.25em; text-align: center; color: var(--ink); }
+.tm-slots .strip span:last-child { color: var(--ink); }
+.tm-slots .reel { background: var(--accent); }
+
+/* 29 Odometer */
+.tm-odo { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; gap: 1.3cqh; color: var(--ink); }
+.tm-odo small { font-size: 11cqh; font-weight: 900; margin: 0 1.5cqh; white-space: nowrap; }
+.tm-odo em { font-size: 22cqh; font-style: normal; font-weight: 900; line-height: 1; transform: translateY(35%); }
+.tm-odo .digit { height: 1.2em; width: .82em; overflow: hidden; font-size: 30cqh; background: var(--ink); border-radius: .12em; font-family: "Space Grotesk", sans-serif; }
+.tm-odo .col span { display: block; height: 1.2em; line-height: 1.2em; text-align: center; color: #fff; font-weight: 700; }
+
+/* 30 Headline Swap */
+.tm-headline { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; }
+.tm-headline .label { font-size: 15cqh; background: #fff; color: var(--ink); padding: 2.5cqh 4cqh; }
+.tm-headline .box { position: relative; background: var(--ink); color: var(--accent); padding: 2.5cqh 5cqh; overflow: hidden; min-width: 50cqw; }
+.tm-headline .txt { font-size: 15cqh; font-weight: 900; }
+.tm-headline .wipe { position: absolute; inset: 0; background: var(--accent); clip-path: inset(0 100% 0 0); }
+.tm-headline .wipe.go { animation: tm-wipe .7s cubic-bezier(.7,0,.3,1); }
+@keyframes tm-wipe {
+  0% { clip-path: inset(0 100% 0 0); }
+  48%, 52% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+
+/* 31 LED Text */
+.tm-led { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* 32 Split Halves */
+.tm-split { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-split b { grid-area: 1 / 1; font-size: 42cqh; color: var(--accent); }
+.tm-split .next { color: #fff; }
+.tm-split .half { color: var(--accent); background: var(--bg); padding: 0 30cqw; }
+.tm-split .top { clip-path: inset(0 0 50% 0); }
+.tm-split .bot { clip-path: inset(50% 0 0 0); }
+.tm-split.go .next { animation: tm-next 2s ease-out both; }
+.tm-split.go .top { animation: tm-top 2s cubic-bezier(.7,0,.2,1) both; }
+.tm-split.go .bot { animation: tm-bot 2s cubic-bezier(.7,0,.2,1) both; }
+@keyframes tm-top { 0%, 40% { transform: none; } 75%, 100% { transform: translateY(-60cqh) rotate(-4deg); } }
+@keyframes tm-bot { 0%, 40% { transform: none; } 75%, 100% { transform: translateY(60cqh) rotate(3deg); } }
+@keyframes tm-next { 0%, 45% { transform: scale(.7); opacity: 0; } 70%, 100% { transform: scale(1); opacity: 1; } }
+
+/* ═════════ STYLE ═════════ */
+
+/* 33 Outline Text */
+.tm-outline { position: absolute; inset: -2cqh 0; display: flex; flex-direction: column; justify-content: space-evenly; transform: rotate(-6deg) scale(1.15); }
+.tm-outline .row {
+  font-size: 17cqh; font-weight: 900; white-space: nowrap; color: transparent; -webkit-text-stroke: .45cqh var(--accent);
+  translate: calc(var(--i) * -6cqw) 0; animation: tm-fillrow 3.5s ease infinite; animation-delay: calc(var(--i) * .35s);
+}
+@keyframes tm-fillrow { 0%, 10% { color: transparent; } 22%, 70% { color: var(--accent); } 85%, 100% { color: transparent; } }
+
+/* 34 Glitch Slices */
+.tm-glitch { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-glitch b { grid-area: 1 / 1; font-size: 48cqh; color: var(--ink); clip-path: inset(var(--t) -30% var(--b) -30%); }
+.tm-glitch b.rgb { text-shadow: -1.2cqw 0 #00e5ff, 1.2cqw 0 #ff2a6d; }
+
+/* 35 Text Mask Pattern */
+.tm-mask {
+  font-size: 54cqh; color: transparent; -webkit-text-stroke: .6cqh var(--ink);
+  background: repeating-linear-gradient(-45deg, var(--accent) 0 3cqh, var(--ink) 3cqh 6cqh);
+  background-size: 8.49cqh 8.49cqh;
+  -webkit-background-clip: text; background-clip: text;
+  animation: tm-maskflow .9s linear infinite;
+}
+@keyframes tm-maskflow { to { background-position: 8.49cqh 0; } }
+
+/* 36 Long Shadow */
+.tm-longshadow { font-size: 34cqh; color: #fff; }
+
+/* 37 Liquid Fill */
+.tm-liquid {
+  font-size: 72cqh; line-height: 1; color: transparent; -webkit-text-stroke: .5cqh var(--accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 400' preserveAspectRatio='none'%3E%3Cpath d='M0 200 Q25 185 50 200 T100 200 T150 200 T200 200 V400 H0Z' fill='%23ee8fbd'/%3E%3C/svg%3E");
+  background-size: 50% 200%; background-repeat: repeat-x;
+  -webkit-background-clip: text; background-clip: text;
+  animation: tm-liquid-wave 1.2s linear infinite, tm-liquid-rise 5s ease-in-out infinite;
+}
+@keyframes tm-liquid-wave { from { background-position-x: 0; } to { background-position-x: 100%; } }
+@keyframes tm-liquid-rise { 0% { background-position-y: 5%; } 80%, 100% { background-position-y: 100%; } }
+
+/* 38 Highlight Text */
+.tm-hl-card { position: absolute; inset: 18cqh 10cqw; background: #fff; border-radius: 2cqh; display: grid; place-items: center; }
+.tm-hl { position: relative; font-size: 15cqh; color: var(--ink); font-family: "Noto Serif TC", serif; }
+.tm-hl::before {
+  content: ''; position: absolute; left: -2%; right: -2%; top: 45%; bottom: -4%; background: #d8f23f; z-index: -1; transform-origin: 0 50%;
+  animation: tm-hl 2.8s cubic-bezier(.6,0,.3,1) infinite; border-radius: .4cqh;
+}
+.tm-hl { z-index: 0; isolation: isolate; }
+@keyframes tm-hl { 0% { transform: scaleX(0); opacity: 1; } 35%, 82% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+
+/* 39 Split Invert */
+.tm-invert { position: absolute; inset: 0; }
+.tm-invert .layer { position: absolute; inset: 0; display: grid; place-items: center; }
+.tm-invert b { font-size: 46cqh; }
+.tm-invert .a { background: var(--bg); }
+.tm-invert .a b { color: #fff; }
+.tm-invert .b { background: #fff; animation: tm-invert 3.2s cubic-bezier(.7,0,.3,1) infinite alternate; }
+.tm-invert .b b { color: var(--bg); }
+@keyframes tm-invert {
+  0%, 10% { clip-path: polygon(0 0, -30% 0, -50% 100%, 0 100%); }
+  90%, 100% { clip-path: polygon(0 0, 150% 0, 130% 100%, 0 100%); }
+}
+
+/* 40 Text Echo */
+.tm-echo {
+  font-size: 30cqh; color: var(--accent); opacity: calc(.7 - var(--i) * .075); filter: blur(calc(var(--i) * .25cqh));
+  animation: tm-echo 3.4s ease-in-out infinite; animation-delay: calc(var(--i) * 70ms);
+}
+.tm-echo.lead { color: #fff; opacity: 1; filter: none; }
+@keyframes tm-echo {
+  0%, 100% { transform: translate(-26cqw, 8cqh) rotate(-6deg); }
+  25% { transform: translate(-4cqw, -14cqh) rotate(4deg); }
+  50% { transform: translate(24cqw, 4cqh) rotate(-3deg); }
+  75% { transform: translate(2cqw, 14cqh) rotate(5deg); }
+}
