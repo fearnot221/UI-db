@@ -17,6 +17,10 @@ npm run dev
 | 收藏集 | 數量 | 來源 |
 | --- | --- | --- |
 | 文字動態 40 招（Text Motion 40） | 40 | [Threads @ai_tjb](https://www.threads.com/@ai_tjb/post/DeeHoA3ktZ5) |
+| 按鈕與微互動 12 招（Micro-interactions 12） | 12 | UI-db 自行整理 |
+| 載入動畫 12 招（Loading 12） | 12 | UI-db 自行整理 |
+| 背景效果 12 招（Backgrounds 12） | 12 | UI-db 自行整理 |
+| 捲動效果 12 招（Scroll Effects 12） | 12 | UI-db 自行整理 |
 
 ## 功能
 
@@ -43,7 +47,7 @@ src/
 ## 新增一個收藏集
 
 1. 在 `src/data/collections.js` 加一筆 collection（需要新分類就加到 `categories`）。
-2. 建立 `src/data/items/<id>.js`，每筆至少有 `id / collection / no / zh / en / desc / tags / prompt / demo`。
+2. 建立 `src/data/items/<id>.js`，用 `defineItems(前綴, 收藏集 id, [...])` 包起來，每筆填 `no / group / zh / en / desc / tags / prompt`（`id`、`demo` 會自動產生）。外部來源的收藏集加 `external: true` 才會顯示來源連結。
 3. 在 `src/data/index.js` import 並加進 `items`。
-4. 在 `src/demos/` 建資料夾寫 demo：`{ [demoKey]: { bg: 'dark' | 'accent' | 'light', run(el) { …; return cleanup } } }`，並在 `src/demos/index.js` 註冊。
+4. 在 `src/demos/` 建資料夾寫 demo：`{ [demoKey]: { bg: 'dark' | 'accent' | 'light', run(el) { …; return cleanup } } }`，並在 `src/demos/index.js` 註冊；新組別的主色加到 `groupAccent` 和 `src/styles/app.css` 的 `[data-g]`。
    舞台 `el` 是 `container-type: size`，可以用 `cqw / cqh` 讓 demo 隨卡片縮放。

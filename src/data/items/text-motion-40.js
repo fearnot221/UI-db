@@ -7,9 +7,9 @@
 //   prompt  可直接貼給 AI 的描述
 //   demo    對應 src/demos/text-motion/ 裡的 demo key
 
-const C = 'text-motion-40'
+import { defineItems } from './define.js'
 
-export default [
+export default defineItems('tm', 'text-motion-40', [
   // ── IMPACT 衝擊 ─────────────────────────────
   { no: 1, group: 'impact', zh: '文字爆開', en: 'Word Burst', desc: '單字咚一聲彈出來', tags: ['強調', '亮點'],
     prompt: 'Word Burst：單字從 0 放大到 120% 再回彈到 100%（彈性 overshoot），同時四周放射出短線條爆開後消失。' },
@@ -99,9 +99,4 @@ export default [
     prompt: 'Split Invert：一條斜線分界掃過畫面，分界兩側的底色與文字色互相反轉。' },
   { no: 40, group: 'style', zh: '殘影', en: 'Text Echo', desc: '字後面拖著一串殘影', tags: ['漂浮', 'MV'],
     prompt: 'Text Echo / Motion Trail：文字移動時後方拖著多層延遲、漸淡、帶模糊的殘影。' },
-].map((item) => ({
-  ...item,
-  id: `tm-${String(item.no).padStart(2, '0')}`,
-  collection: C,
-  demo: item.en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-}))
+])

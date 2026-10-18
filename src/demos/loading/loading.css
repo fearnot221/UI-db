@@ -1,0 +1,105 @@
+/* 載入動畫 */
+.ld-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 3cqh; }
+
+/* 01 Ring */
+.ld-ring { width: 30cqh; height: 30cqh; border-radius: 50%; border: 3cqh solid rgba(255,255,255,.1); border-top-color: var(--accent); animation: ld-rot .8s linear infinite; }
+@keyframes ld-rot { to { transform: rotate(360deg); } }
+
+/* 02 Dots */
+.ld-dots i { width: 8cqh; height: 8cqh; border-radius: 50%; background: var(--accent); animation: ld-bounce 1.2s ease-in-out infinite; }
+.ld-dots i:nth-child(2) { animation-delay: .15s; }
+.ld-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes ld-bounce { 0%, 60%, 100% { transform: none; } 30% { transform: translateY(-10cqh); } }
+
+/* 03 Pulse */
+.ld-pulse > * { position: absolute; border-radius: 50%; }
+.ld-pulse b { width: 10cqh; height: 10cqh; background: var(--accent); }
+.ld-pulse i { width: 10cqh; height: 10cqh; border: .8cqh solid var(--accent); animation: ld-pulse 2.4s ease-out infinite; opacity: 0; }
+.ld-pulse i:nth-child(2) { animation-delay: .8s; }
+.ld-pulse i:nth-child(3) { animation-delay: 1.6s; }
+@keyframes ld-pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(7); opacity: 0; } }
+
+/* 04 Orbit */
+.ld-orbit > * { position: absolute; border-radius: 50%; }
+.ld-orbit b { width: 9cqh; height: 9cqh; background: #fff; }
+.ld-orbit span { border: .3cqh solid rgba(255,255,255,.15); animation: ld-rot linear infinite; }
+.ld-orbit .o1 { width: 34cqh; height: 34cqh; animation-duration: 1.4s; }
+.ld-orbit .o2 { width: 58cqh; height: 58cqh; animation-duration: 2.6s; animation-direction: reverse; }
+.ld-orbit i { position: absolute; top: -2.5cqh; left: 50%; width: 5cqh; height: 5cqh; margin-left: -2.5cqh; border-radius: 50%; background: var(--accent); box-shadow: 0 0 3cqh var(--accent); }
+
+/* 05 Equalizer */
+.ld-eq { gap: 2cqh; }
+.ld-eq i { width: 4.5cqh; height: 34cqh; border-radius: 3cqh; background: var(--accent); animation: ld-eq 1s ease-in-out infinite; animation-delay: calc(var(--d) * -.18s); }
+@keyframes ld-eq { 0%, 100% { transform: scaleY(.25); } 50% { transform: scaleY(1); } }
+
+/* 06 Morph */
+.ld-morph { width: 22cqh; height: 22cqh; background: var(--accent); animation: ld-morph 2s cubic-bezier(.7,0,.3,1) infinite; }
+@keyframes ld-morph {
+  0% { transform: rotate(0); border-radius: 12%; }
+  50% { transform: rotate(180deg); border-radius: 50%; }
+  100% { transform: rotate(360deg); border-radius: 12%; }
+}
+
+/* 07 Skeleton */
+.ld-skels { flex-direction: column; gap: 4cqh; }
+.ld-skel { display: flex; gap: 4cqh; width: 74cqw; }
+.ld-skel > div { flex: 1; display: flex; flex-direction: column; gap: 2.4cqh; }
+.ld-skel i {
+  display: block; height: 5cqh; border-radius: 2cqh;
+  background: linear-gradient(90deg, #e7e7ea 0 40%, #f6f6f8 50%, #e7e7ea 60% 100%) 0 0 / 300% 100%; animation: ld-shine 1.4s linear infinite;
+}
+.ld-skel .av { flex: none; width: 18cqh; height: 18cqh; border-radius: 50%; }
+.ld-skel .l1 { width: 55%; height: 6cqh; }
+.ld-skel .l3 { width: 75%; }
+@keyframes ld-shine { from { background-position: 100% 0; } to { background-position: 0 0; } }
+
+/* 08 Progress Bar */
+.ld-bar { width: 72cqw; }
+.ld-bar .head { display: flex; justify-content: space-between; font: 700 6.5cqh var(--sans, sans-serif); color: #ececee; margin-bottom: 3cqh; }
+.ld-bar b { font-family: var(--latin, sans-serif); font-variant-numeric: tabular-nums; color: var(--accent); }
+.ld-bar .track { height: 4cqh; border-radius: 3cqh; background: rgba(255,255,255,.1); overflow: hidden; }
+.ld-bar .track i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; border-radius: inherit; }
+
+/* 09 Indeterminate */
+.ld-indet { width: 72cqw; height: 3cqh; border-radius: 3cqh; background: rgba(255,255,255,.1); overflow: hidden; position: relative; }
+.ld-indet i { position: absolute; inset: 0; background: var(--accent); border-radius: inherit; animation: ld-indet 1.6s cubic-bezier(.6,0,.4,1) infinite; }
+@keyframes ld-indet {
+  0% { transform: translateX(-100%) scaleX(.2); }
+  50% { transform: translateX(10%) scaleX(.6); }
+  100% { transform: translateX(110%) scaleX(.2); }
+}
+
+/* 10 Circular */
+.ld-circle { position: relative; width: 56cqh; height: 56cqh; display: grid; place-items: center; }
+.ld-circle svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.ld-circle circle { fill: none; stroke-width: 8; }
+.ld-circle .bg { stroke: rgba(255,255,255,.1); }
+.ld-circle .fg { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.ld-circle b { font: 700 12cqh var(--latin, sans-serif); color: #fff; font-variant-numeric: tabular-nums; }
+
+/* 11 Typing */
+.ld-chat { flex-direction: column; align-items: flex-start; padding-left: 14cqw; gap: 3cqh; }
+.ld-chat .msg, .ld-chat .typing { border-radius: 5cqh 5cqh 5cqh 1.5cqh; background: #e9e9ed; }
+.ld-chat .msg { font: 500 7cqh var(--sans, sans-serif); color: var(--ink); padding: 4cqh 6cqh; }
+.ld-chat .typing { display: flex; gap: 2cqh; padding: 5.5cqh 6cqh; }
+.ld-chat .typing i { width: 4.5cqh; height: 4.5cqh; border-radius: 50%; background: #8b8b94; animation: ld-type 1.2s infinite; }
+.ld-chat .typing i:nth-child(2) { animation-delay: .2s; }
+.ld-chat .typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes ld-type { 0%, 60%, 100% { opacity: .35; transform: none; } 30% { opacity: 1; transform: translateY(-1.5cqh); } }
+
+/* 12 Blur Reveal（圖用漸層畫的山景） */
+.ld-photo { width: 70cqw; height: 72cqh; border-radius: 4cqh; overflow: hidden; }
+.ld-photo .img {
+  width: 100%; height: 100%;
+  background:
+    radial-gradient(circle at 70% 32%, #fff3c4 0 7%, transparent 7.5%),
+    linear-gradient(160deg, transparent 55%, #2d5a4a 55.5%) ,
+    linear-gradient(200deg, transparent 48%, #3f7a5f 48.5%),
+    linear-gradient(#ffb48a, #ff7e7e 55%, #6a4c93);
+  animation: ld-blur 3.6s ease-in-out infinite;
+}
+@keyframes ld-blur {
+  0%, 15% { filter: blur(3cqh) saturate(.6); transform: scale(1.15); }
+  55%, 85% { filter: blur(0) saturate(1); transform: scale(1); }
+  100% { filter: blur(3cqh) saturate(.6); transform: scale(1.15); }
+}

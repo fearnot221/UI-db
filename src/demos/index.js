@@ -1,8 +1,16 @@
 import textMotion from './text-motion/index.js'
+import micro from './micro/index.js'
+import loading from './loading/index.js'
+import background from './background/index.js'
+import scroll from './scroll/index.js'
 
 // collection id → { demoKey: { bg, run(el) } }
 export const demosByCollection = {
   'text-motion-40': textMotion,
+  'micro-12': micro,
+  'loading-12': loading,
+  'background-12': background,
+  'scroll-12': scroll,
 }
 
 // 每個組別的主色（舞台用）
@@ -12,6 +20,14 @@ export const groupAccent = {
   depth: '#d97a5b',
   switch: '#dcf244',
   style: '#ee8fbd',
+  button: '#7aa7ff',
+  feedback: '#b69cff',
+  spinner: '#5fd3c6',
+  placeholder: '#ffb454',
+  gradient: '#ff9e6b',
+  pattern: '#6be0ff',
+  trigger: '#8ef0a8',
+  linked: '#f5d76e',
 }
 
 // 在 el 上掛載 demo，回傳 cleanup

@@ -3,7 +3,10 @@
 
 export const categories = [
   { id: 'text-motion', label: '文字動態', en: 'Text Motion' },
-  // 之後可擴充：{ id: 'scroll', label: '捲動效果', en: 'Scroll Effects' } ...
+  { id: 'micro', label: '按鈕與微互動', en: 'Micro-interactions' },
+  { id: 'loading', label: '載入動畫', en: 'Loading' },
+  { id: 'background', label: '背景效果', en: 'Backgrounds' },
+  { id: 'scroll', label: '捲動效果', en: 'Scroll Effects' },
 ]
 
 export const collections = [
@@ -13,6 +16,7 @@ export const collections = [
     title: '文字動態 40 招',
     en: 'Text Motion 40',
     author: '@ai_tjb',
+    external: true,
     source: 'https://www.threads.com/@ai_tjb/post/DeeHoA3ktZ5',
     savedAt: '2026-10-16',
     note: '每招都有名字：把中文名 + 英文原名寫進提示詞，AI 就能做出那一招。',
@@ -22,6 +26,62 @@ export const collections = [
       { id: 'depth', label: 'DEPTH', zh: '景深', desc: '鑽進文字裡面', range: '17–24' },
       { id: 'switch', label: 'SWITCH', zh: '切換', desc: '把一個詞換成另一個', range: '25–32' },
       { id: 'style', label: 'STYLE', zh: '風格', desc: '換個呈現方式就升級', range: '33–40' },
+    ],
+  },
+  {
+    id: 'micro-12',
+    category: 'micro',
+    title: '按鈕與微互動 12 招',
+    en: 'Micro-interactions 12',
+    author: 'UI-db',
+    source: 'https://ui.fearnot.tw/',
+    savedAt: '2026-10-19',
+    note: '讓點擊、切換、成功與失敗都有回饋。卡片裡的按鈕多數也能直接用滑鼠玩。',
+    groups: [
+      { id: 'button', label: 'BUTTON', zh: '按鈕', desc: '按鈕本身的動態', range: '01–06' },
+      { id: 'feedback', label: 'FEEDBACK', zh: '回饋', desc: '操作後的狀態回饋', range: '07–12' },
+    ],
+  },
+  {
+    id: 'loading-12',
+    category: 'loading',
+    title: '載入動畫 12 招',
+    en: 'Loading 12',
+    author: 'UI-db',
+    source: 'https://ui.fearnot.tw/',
+    savedAt: '2026-10-19',
+    note: '等待的時候給使用者看什麼：轉圈、跳點，或先畫出內容的骨架。',
+    groups: [
+      { id: 'spinner', label: 'SPINNER', zh: '轉圈', desc: '不知道要等多久', range: '01–06' },
+      { id: 'placeholder', label: 'PROGRESS', zh: '進度與佔位', desc: '知道進度或內容形狀', range: '07–12' },
+    ],
+  },
+  {
+    id: 'background-12',
+    category: 'background',
+    title: '背景效果 12 招',
+    en: 'Backgrounds 12',
+    author: 'UI-db',
+    source: 'https://ui.fearnot.tw/',
+    savedAt: '2026-10-19',
+    note: '放在 Hero 或整頁後面的動態背景，前景內容不用動也有氛圍。',
+    groups: [
+      { id: 'gradient', label: 'GRADIENT', zh: '漸層光影', desc: '顏色與光的流動', range: '01–06' },
+      { id: 'pattern', label: 'PATTERN', zh: '圖樣粒子', desc: '網格、粒子與紋理', range: '07–12' },
+    ],
+  },
+  {
+    id: 'scroll-12',
+    category: 'scroll',
+    title: '捲動效果 12 招',
+    en: 'Scroll Effects 12',
+    author: 'UI-db',
+    source: 'https://ui.fearnot.tw/',
+    savedAt: '2026-10-19',
+    note: '卡片裡是一個會自動捲動的小頁面；滑鼠移進去會暫停，可以自己捲。',
+    groups: [
+      { id: 'trigger', label: 'TRIGGERED', zh: '捲動觸發', desc: '滾進畫面 → 自己播完', range: '01–06' },
+      { id: 'linked', label: 'LINKED', zh: '捲動連動', desc: '滾多少 → 動多少', range: '07–12' },
     ],
   },
 ]

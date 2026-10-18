@@ -28,6 +28,14 @@ a { color: inherit; }
 [data-g="impact"], [data-g="style"] { --g: var(--pink); }
 [data-g="flow"], [data-g="switch"] { --g: var(--lime); }
 [data-g="depth"] { --g: var(--orange); }
+[data-g="button"] { --g: #7aa7ff; }
+[data-g="feedback"] { --g: #b69cff; }
+[data-g="spinner"] { --g: #5fd3c6; }
+[data-g="placeholder"] { --g: #ffb454; }
+[data-g="gradient"] { --g: #ff9e6b; }
+[data-g="pattern"] { --g: #6be0ff; }
+[data-g="trigger"] { --g: #8ef0a8; }
+[data-g="linked"] { --g: #f5d76e; }
 
 /* ── Sidebar ── */
 .side { border-right: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; padding: 22px 14px 16px; overflow-y: auto; }

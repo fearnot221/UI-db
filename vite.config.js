@@ -36,7 +36,7 @@ function seo() {
             .filter((it) => it.collection === c.id)
             .map((it) => `<li><a href="#${it.id}">${esc(it.zh)}（${esc(it.en)}）</a>：${esc(it.desc)}。${esc(it.prompt)}</li>`)
             .join('')
-          return `<section><h2>${esc(c.title)}（${esc(c.en)}）</h2><p>${esc(c.note)} 來源：<a href="${c.source}">${esc(c.author)}</a></p><ol>${lis}</ol></section>`
+          return `<section><h2>${esc(c.title)}（${esc(c.en)}）</h2><p>${esc(c.note)}${c.external ? ` 來源：<a href="${c.source}">${esc(c.author)}</a>` : ''}</p><ol>${lis}</ol></section>`
         })
         .join('')
       return html

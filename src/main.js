@@ -101,7 +101,7 @@ function renderHeader() {
     $('#titleArea').innerHTML = `
       <div class="eyebrow">${esc(c.en)} · 收藏於 ${c.savedAt}</div>
       <h1>${esc(c.title)}</h1>
-      <p class="note">${esc(c.note)} <a href="${c.source}" target="_blank" rel="noopener">來源 ${esc(c.author)} ${icons.link}</a></p>`
+      <p class="note">${esc(c.note)} ${c.external ? `<a href="${c.source}" target="_blank" rel="noopener">來源 ${esc(c.author)} ${icons.link}</a>` : ''}</p>`
   } else {
     const label = state.view === 'favs' ? '我的最愛' : '全部收藏'
     $('#titleArea').innerHTML = `<div class="eyebrow">UI-db · dashboard / database</div><h1>${label}</h1>
@@ -183,7 +183,7 @@ function openModal(id) {
             <button class="btn ${state.favs.has(it.id) ? 'on' : ''}" data-fav="${it.id}">${icons.star}${state.favs.has(it.id) ? '已收藏' : '加入最愛'}</button>
           </div>
         </div>
-        <a class="src" href="${c.source}" target="_blank" rel="noopener">來源：${esc(c.author)} ${icons.link}</a>
+        ${c.external ? `<a class="src" href="${c.source}" target="_blank" rel="noopener">來源：${esc(c.author)} ${icons.link}</a>` : ''}
       </div>
     </div>`
   m.hidden = false
@@ -235,6 +235,8 @@ function toggleFav(id) {
 }
 
 document.addEventListener('click', (e) => {
+  // demo 裡可以直接玩的按鈕，不要順便打開大圖
+  if (e.target.closest('.card .stage :is(button, label)')) return
   const t = e.target.closest('[data-view],[data-group],[data-fav],[data-copy],[data-copyname],[data-close],.card,.modal')
   if (!t) return
   if (t.dataset.view) {

@@ -1,0 +1,120 @@
+/* 按鈕與微互動 — 舞台提供 --accent、--bg、--fg 與 cqw / cqh */
+.mi-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 3cqh; }
+.mi-btn {
+  position: relative; overflow: hidden; border: 0; border-radius: 999px; padding: 0 7cqh; height: 20cqh;
+  font: 700 7.5cqh/1 var(--sans, sans-serif); color: var(--ink); background: var(--accent); cursor: pointer;
+}
+
+/* 01 Ripple */
+.mi-rip { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: rgba(255,255,255,.65); pointer-events: none; animation: mi-rip .7s ease-out forwards; }
+@keyframes mi-rip { to { transform: scale(60); opacity: 0; } }
+
+/* 02 Magnetic */
+.mi-cursor { position: absolute; left: -1.5cqh; top: -1.5cqh; width: 3cqh; height: 3cqh; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1.2cqh rgba(255,255,255,.15); pointer-events: none; transition: opacity .3s; }
+
+/* 03 Shimmer */
+.mi-shimmer::after {
+  content: ''; position: absolute; inset: 0; transform: translateX(-120%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent); animation: mi-shimmer 2.4s ease-in-out infinite;
+}
+@keyframes mi-shimmer { 0%, 30% { transform: translateX(-120%) skewX(-20deg); } 70%, 100% { transform: translateX(120%) skewX(-20deg); } }
+
+/* 04 Glow Border */
+@property --mi-ang { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+.mi-glow { position: relative; padding: .8cqh; border-radius: 999px; background: conic-gradient(from var(--mi-ang), #7aa7ff, #b69cff, #ff7eb6, #ffd27a, #7aa7ff); animation: mi-spin 3s linear infinite; }
+.mi-glow::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: inherit; filter: blur(4cqh); opacity: .7; z-index: -1; }
+.mi-glow .mi-btn { background: #141417; color: #fff; }
+@keyframes mi-spin { to { --mi-ang: 360deg; } }
+
+/* 05 Press Squish */
+.mi-squish { box-shadow: 0 2.4cqh 0 color-mix(in srgb, var(--accent) 45%, #000); animation: mi-squish 1.8s infinite; transition: transform .1s; }
+.mi-squish:active { transform: translateY(2cqh) scale(.96); box-shadow: 0 .4cqh 0 color-mix(in srgb, var(--accent) 45%, #000); animation: none; }
+@keyframes mi-squish {
+  0%, 30% { transform: none; box-shadow: 0 2.4cqh 0 color-mix(in srgb, var(--accent) 45%, #000); }
+  38% { transform: translateY(2cqh) scale(.95); box-shadow: 0 .4cqh 0 color-mix(in srgb, var(--accent) 45%, #000); }
+  50% { transform: translateY(-1cqh) scale(1.04); }
+  60%, 100% { transform: none; box-shadow: 0 2.4cqh 0 color-mix(in srgb, var(--accent) 45%, #000); }
+}
+
+/* 06 Hover Fill */
+.mi-fill { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 .6cqh var(--accent); transition: color .35s; }
+.mi-fill::before { content: ''; position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: 0 50%; transition: transform .35s cubic-bezier(.6,0,.3,1); }
+.mi-fill span { position: relative; }
+.mi-fill.on, .mi-fill:hover { color: var(--ink); }
+.mi-fill.on::before, .mi-fill:hover::before { transform: scaleX(1); }
+
+/* 07 Like Burst */
+.mi-like { position: relative; width: 24cqh; height: 24cqh; border: 0; background: none; cursor: pointer; padding: 0; }
+.mi-like svg { width: 100%; height: 100%; fill: none; stroke: #8b8b94; stroke-width: 1.6; transition: fill .2s, stroke .2s; }
+.mi-like.on svg { fill: #ff4d6d; stroke: #ff4d6d; }
+.mi-like.pop svg { animation: mi-pop .45s cubic-bezier(.3,1.8,.5,1); }
+.mi-like .dots { position: absolute; left: 50%; top: 50%; }
+.mi-like .dots i { position: absolute; width: 2.4cqh; height: 2.4cqh; margin: -1.2cqh; border-radius: 50%; background: var(--accent); opacity: 0; }
+.mi-like .dots i:nth-child(odd) { background: #ff4d6d; }
+.mi-like.pop .dots i { animation: mi-dot .6s ease-out; }
+.mi-count { font: 700 9cqh var(--latin, sans-serif); color: #fff; font-variant-numeric: tabular-nums; }
+@keyframes mi-pop { 0% { transform: scale(.4); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes mi-dot {
+  0% { transform: rotate(var(--a)) translateY(-8cqh) scale(1); opacity: 1; }
+  100% { transform: rotate(var(--a)) translateY(-20cqh) scale(0); opacity: 1; }
+}
+
+/* 08 Toggle Switch */
+.mi-label { font: 700 8cqh var(--sans, sans-serif); color: var(--ink); }
+.mi-switch { position: relative; width: 34cqh; height: 18cqh; border: 0; border-radius: 999px; background: #d4d4d8; cursor: pointer; transition: background .3s; padding: 0; }
+.mi-switch i { position: absolute; top: 2cqh; left: 2cqh; width: 14cqh; height: 14cqh; border-radius: 999px; background: #fff; box-shadow: 0 .6cqh 1.6cqh rgba(0,0,0,.2); transition: left .35s cubic-bezier(.5,1.6,.4,.9); }
+.mi-switch.on { background: var(--accent); }
+.mi-switch.on i { left: 18cqh; }
+.mi-switch i.move { animation: mi-stretch .35s ease; }
+@keyframes mi-stretch { 50% { width: 20cqh; } }
+.mi-switch.on i.move { animation-name: mi-stretch-r; }
+@keyframes mi-stretch-r { 50% { width: 20cqh; margin-left: -6cqh; } }
+
+/* 09 Checkbox Draw */
+.mi-todo { display: flex; flex-direction: column; gap: 3cqh; }
+.mi-check { display: flex; align-items: center; gap: 3cqh; font: 700 7.5cqh var(--sans, sans-serif); color: var(--ink); cursor: pointer; transition: color .3s; }
+.mi-check .box { width: 10cqh; height: 10cqh; border-radius: 2.4cqh; border: .7cqh solid #c4c4cc; display: grid; place-items: center; transition: background .25s, border-color .25s; }
+.mi-check svg { width: 80%; fill: none; stroke: #fff; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 22; stroke-dashoffset: 22; transition: stroke-dashoffset .35s .1s ease-out; }
+.mi-check.on { color: #a1a1aa; text-decoration: line-through; }
+.mi-check.on .box { background: var(--accent); border-color: var(--accent); }
+.mi-check.on svg { stroke-dashoffset: 0; }
+
+/* 10 Copy Feedback */
+.mi-code { display: flex; align-items: center; gap: 3cqh; padding: 3cqh 3cqh 3cqh 6cqh; border-radius: 4cqh; background: #1d1d21; border: .4cqh solid #2a2a30; }
+.mi-code code { font: 500 8cqh ui-monospace, Menlo, monospace; color: #ececee; }
+.mi-copy { position: relative; width: 14cqh; height: 14cqh; border: 0; border-radius: 3cqh; background: #2a2a30; color: #ececee; cursor: pointer; }
+.mi-copy .i { position: absolute; inset: 3cqh; transition: transform .25s, opacity .25s; }
+.mi-copy svg { display: block; width: 100%; height: 100%; }
+.mi-copy .ok { color: var(--accent); opacity: 0; transform: scale(.4); }
+.mi-copy em {
+  position: absolute; bottom: 120%; left: 50%; translate: -50% 0; white-space: nowrap; font: 700 5.5cqh var(--sans, sans-serif); font-style: normal;
+  color: var(--ink); background: var(--accent); padding: 1.4cqh 3cqh; border-radius: 2cqh; opacity: 0; transform: translateY(2cqh) scale(.8); transition: all .25s cubic-bezier(.3,1.6,.5,1);
+}
+.mi-copy.done .copy { opacity: 0; transform: scale(.4); }
+.mi-copy.done .ok { opacity: 1; transform: none; }
+.mi-copy.done em { opacity: 1; transform: none; }
+
+/* 11 Shake Error */
+.mi-form { width: 62cqw; }
+.mi-input { font: 500 8cqh var(--sans, sans-serif); color: var(--ink); padding: 4cqh 5cqh; border-radius: 3cqh; border: .7cqh solid #d4d4d8; background: #fff; transition: border-color .2s; }
+.mi-err { margin: 2.5cqh 0 0 1cqh; font: 700 6cqh var(--sans, sans-serif); color: #e5484d; opacity: 0; transform: translateY(-2cqh); transition: all .25s; }
+.mi-form.err .mi-input { border-color: #e5484d; animation: mi-shake .45s; }
+.mi-form.err .mi-err { opacity: 1; transform: none; }
+@keyframes mi-shake { 15%, 55% { transform: translateX(-3cqw); } 35%, 75% { transform: translateX(3cqw); } 90% { transform: translateX(-1cqw); } }
+
+/* 12 Toast */
+.mi-toast {
+  position: absolute; left: 50%; bottom: 10cqh; width: 66cqw; margin-left: -33cqw; display: flex; align-items: center; gap: 4cqh; overflow: hidden;
+  padding: 5cqh 6cqh; border-radius: 4cqh; background: #f4f4f5; color: var(--ink); box-shadow: 0 3cqh 8cqh rgba(0,0,0,.4); animation: mi-toast 3.6s infinite;
+}
+.mi-toast .ok { flex: none; width: 12cqh; height: 12cqh; border-radius: 50%; display: grid; place-items: center; background: var(--accent); font: 900 7cqh sans-serif; }
+.mi-toast b { display: block; font: 900 7cqh var(--sans, sans-serif); }
+.mi-toast small { font: 500 5.5cqh var(--sans, sans-serif); color: #71717a; }
+.mi-toast .bar { position: absolute; left: 0; bottom: 0; height: 1.4cqh; width: 100%; background: var(--accent); transform-origin: 0 50%; animation: mi-bar 3.6s linear infinite; }
+@keyframes mi-toast {
+  0% { transform: translateY(160%); }
+  10% { transform: translateY(-6%); }
+  15%, 82% { transform: none; }
+  92%, 100% { transform: translateY(160%); }
+}
+@keyframes mi-bar { 0%, 15% { transform: scaleX(1); } 82%, 100% { transform: scaleX(0); } }
