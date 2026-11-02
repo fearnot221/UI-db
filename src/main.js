@@ -183,7 +183,7 @@ function openModal(id) {
             <button class="btn ${state.favs.has(it.id) ? 'on' : ''}" data-fav="${it.id}">${icons.star}${state.favs.has(it.id) ? '已收藏' : '加入最愛'}</button>
           </div>
         </div>
-        ${c.external ? `<a class="src" href="${c.source}" target="_blank" rel="noopener">來源：${esc(c.author)} ${icons.link}</a>` : ''}
+        ${c.external ? `<a class="src" href="${it.url || c.source}" target="_blank" rel="noopener">來源：${esc(c.author)} ${icons.link}</a>` : ''}
       </div>
     </div>`
   m.hidden = false

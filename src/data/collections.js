@@ -8,6 +8,7 @@ export const categories = [
   { id: 'background', label: '背景效果', en: 'Backgrounds' },
   { id: 'scroll', label: '捲動效果', en: 'Scroll Effects' },
   { id: 'motion-picks', label: '動態精選', en: 'Motion Picks' },
+  { id: 'motion-library', label: 'Motion Library', en: '331 招' },
 ]
 
 export const collections = [
@@ -98,6 +99,29 @@ export const collections = [
     groups: [
       { id: 'mp-visual', label: 'VISUAL', zh: '視覺', desc: '畫面與質感', range: '01–06' },
       { id: 'mp-ui', label: 'UI', zh: '介面', desc: '元件與互動', range: '07–12' },
+    ],
+  },
+  {
+    id: 'motion-library',
+    category: 'motion-library',
+    title: 'Motion Library 331 招',
+    en: 'Motion Library',
+    author: 'Hannah @kittenjamc',
+    external: true,
+    noindex: true,
+    source: 'https://kittenjam-motion-library.vercel.app',
+    savedAt: '2026-11-02',
+    note: '原站的索引：預覽嵌入自原站，描述與 AI 提示詞請點來源到原站查看。版權歸原作者所有。',
+    groups: [
+      { id: 'ml-text', label: 'TEXT', zh: '文字', range: '106' },
+      { id: 'ml-button', label: 'BUTTON', zh: '按鈕', range: '21' },
+      { id: 'ml-form', label: 'FORM', zh: '表單・控制項', range: '17' },
+      { id: 'ml-card', label: 'CARD', zh: '卡片・群組', range: '41' },
+      { id: 'ml-media', label: 'MEDIA', zh: '圖片・媒體', range: '22' },
+      { id: 'ml-svg', label: 'SVG', zh: '圖形・SVG', range: '35' },
+      { id: 'ml-bg', label: 'BG', zh: '背景・氛圍', range: '36' },
+      { id: 'ml-layout', label: 'LAYOUT', zh: '版面・頁面', range: '37' },
+      { id: 'ml-cursor', label: 'CURSOR', zh: '游標', range: '16' },
     ],
   },
 ]

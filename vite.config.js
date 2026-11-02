@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite'
-import { items, collections } from './src/data/index.js'
+import { items, collections as allCollections } from './src/data/index.js'
 
 const SITE = 'https://ui.fearnot.tw/'
+// 原作者的索引不提供給搜尋引擎
+const collections = allCollections.filter((c) => !c.noindex)
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
 
 // 建置時把資料寫進 HTML：JSON-LD 結構化資料 + 給爬蟲 / 無 JS 環境看的靜態內容

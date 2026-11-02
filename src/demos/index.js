@@ -34,8 +34,20 @@ export const groupAccent = {
   'mp-ui': '#9be7ff',
 }
 
+// 嵌入原站頁面，裁切到預覽區。原站寬 800 時預覽約在 (30, 290)，大小 740×380
+// shortcut: 依原站目前版面寫死裁切位置，原站改版要調整
+function mountEmbed(el, item) {
+  el.dataset.bg = 'dark'
+  const s = Math.max(el.clientWidth / 740, el.clientHeight / 380)
+  const x = (el.clientWidth - 740 * s) / 2 - 30 * s
+  const y = (el.clientHeight - 380 * s) / 2 - 290 * s
+  el.innerHTML = `<iframe class="stage-embed" src="${item.embed}" title="${item.zh}" loading="lazy" sandbox="allow-scripts allow-same-origin" style="transform:translate(${x}px,${y}px) scale(${s})"></iframe>`
+  return () => { el.innerHTML = '' }
+}
+
 // 在 el 上掛載 demo，回傳 cleanup
 export function mountDemo(el, item) {
+  if (item.embed) return mountEmbed(el, item)
   const demo = demosByCollection[item.collection]?.[item.demo]
   if (!demo) {
     el.innerHTML = '<div class="stage-missing">尚無 demo</div>'

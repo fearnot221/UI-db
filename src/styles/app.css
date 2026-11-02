@@ -38,6 +38,7 @@ a { color: inherit; }
 [data-g="linked"] { --g: #f5d76e; }
 [data-g="mp-visual"] { --g: #ff8fa3; }
 [data-g="mp-ui"] { --g: #9be7ff; }
+[data-g^="ml-"] { --g: #dcf244; }
 
 /* ── Sidebar ── */
 .side { border-right: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; padding: 22px 14px 16px; overflow-y: auto; }
@@ -126,6 +127,7 @@ h1 { margin: 6px 0 6px; font-size: 32px; font-weight: 900; letter-spacing: .01em
 }
 .stage[data-bg="accent"] { --bg: var(--accent); --fg: var(--ink); }
 .stage[data-bg="light"] { --bg: #fbfaf6; --fg: var(--ink); }
+.stage-embed { position: absolute; left: 0; top: 0; width: 800px; height: 1000px; border: 0; transform-origin: 0 0; }
 .stage-missing { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; }
 
 /* ── Modal ── */
