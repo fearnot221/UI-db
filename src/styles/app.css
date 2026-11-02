@@ -26,7 +26,7 @@ a { color: inherit; }
 
 /* 組別色 */
 [data-g="impact"], [data-g="style"] { --g: var(--pink); }
-[data-g="flow"], [data-g="switch"] { --g: var(--lime); }
+[data-g="flow"], [data-g="switch"], [data-g="motion-site"] { --g: var(--lime); }
 [data-g="depth"] { --g: var(--orange); }
 [data-g="button"] { --g: #7aa7ff; }
 [data-g="feedback"] { --g: #b69cff; }

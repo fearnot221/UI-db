@@ -3,6 +3,7 @@ import micro from './micro/index.js'
 import loading from './loading/index.js'
 import background from './background/index.js'
 import scroll from './scroll/index.js'
+import resources from './resources/index.js'
 
 // collection id → { demoKey: { bg, run(el) } }
 export const demosByCollection = {
@@ -11,6 +12,7 @@ export const demosByCollection = {
   'loading-12': loading,
   'background-12': background,
   'scroll-12': scroll,
+  resources,
 }
 
 // 每個組別的主色（舞台用）
@@ -28,6 +30,7 @@ export const groupAccent = {
   pattern: '#6be0ff',
   trigger: '#8ef0a8',
   linked: '#f5d76e',
+  'motion-site': '#dcf244',
 }
 
 // 在 el 上掛載 demo，回傳 cleanup

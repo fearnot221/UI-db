@@ -7,6 +7,7 @@ export const categories = [
   { id: 'loading', label: '載入動畫', en: 'Loading' },
   { id: 'background', label: '背景效果', en: 'Backgrounds' },
   { id: 'scroll', label: '捲動效果', en: 'Scroll Effects' },
+  { id: 'resources', label: '參考網站', en: 'References' },
 ]
 
 export const collections = [
@@ -82,6 +83,20 @@ export const collections = [
     groups: [
       { id: 'trigger', label: 'TRIGGERED', zh: '捲動觸發', desc: '滾進畫面 → 自己播完', range: '01–06' },
       { id: 'linked', label: 'LINKED', zh: '捲動連動', desc: '滾多少 → 動多少', range: '07–12' },
+    ],
+  },
+  {
+    id: 'resources',
+    category: 'resources',
+    title: '參考網站',
+    en: 'References',
+    author: '@kittenjamc',
+    external: true,
+    source: 'https://kittenjam-motion-library.vercel.app',
+    savedAt: '2026-11-02',
+    note: '別人整理好的 UI 資源，點來源直接前往原站。',
+    groups: [
+      { id: 'motion-site', label: 'MOTION', zh: '動態', desc: '動態效果資料庫', range: '01' },
     ],
   },
 ]
