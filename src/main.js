@@ -38,7 +38,7 @@ $('#app').innerHTML = `
       <p>我的 UI 效果與工具資料庫</p>
     </div>
     <nav class="nav" id="nav"></nav>
-    <div class="side-foot">${items.length} 筆收藏 · ${collections.length} 個收藏集</div>
+    <div class="side-foot">${items.length} 筆收藏 · ${collections.length} 個收藏集<br />本站僅協助整理，版權歸原作者所有</div>
   </aside>
   <main class="main">
     <header class="top">

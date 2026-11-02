@@ -7,7 +7,7 @@ export const categories = [
   { id: 'loading', label: '載入動畫', en: 'Loading' },
   { id: 'background', label: '背景效果', en: 'Backgrounds' },
   { id: 'scroll', label: '捲動效果', en: 'Scroll Effects' },
-  { id: 'resources', label: '參考網站', en: 'References' },
+  { id: 'motion-picks', label: '動態精選', en: 'Motion Picks' },
 ]
 
 export const collections = [
@@ -86,17 +86,18 @@ export const collections = [
     ],
   },
   {
-    id: 'resources',
-    category: 'resources',
-    title: '參考網站',
-    en: 'References',
-    author: '@kittenjamc',
+    id: 'motion-picks',
+    category: 'motion-picks',
+    title: '動態精選 12 招',
+    en: 'Motion Picks 12',
+    author: 'Motion Library（Hannah @kittenjamc）',
     external: true,
     source: 'https://kittenjam-motion-library.vercel.app',
     savedAt: '2026-11-02',
-    note: '別人整理好的 UI 資源，點來源直接前往原站。',
+    note: '從 Motion Library 發現的技法。Demo、說明與提示詞由 UI-db 自行製作，原作與完整 331 招請見來源。',
     groups: [
-      { id: 'motion-site', label: 'MOTION', zh: '動態', desc: '動態效果資料庫', range: '01' },
+      { id: 'mp-visual', label: 'VISUAL', zh: '視覺', desc: '畫面與質感', range: '01–06' },
+      { id: 'mp-ui', label: 'UI', zh: '介面', desc: '元件與互動', range: '07–12' },
     ],
   },
 ]
