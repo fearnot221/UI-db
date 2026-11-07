@@ -31,7 +31,7 @@ npm run deploy
 | 載入動畫 12 招（Loading 12） | 12 | UI-db 自行整理 |
 | 背景效果 12 招（Backgrounds 12） | 12 | UI-db 自行整理 |
 | 捲動效果 12 招（Scroll Effects 12） | 12 | UI-db 自行整理 |
-| Motion Library 331 招 | 331 | 索引與嵌入預覽，內容在 [原站](https://kittenjam-motion-library.vercel.app) |
+| Motion Library 重製 | 276 | 依 [Motion Library @kittenjamc](https://kittenjam-motion-library.vercel.app) 的清單自行重寫 demo、說明與提示詞；與上面同名的 55 招合併到既有 demo |
 | 動態精選 12 招（Motion Picks 12） | 12 | 技法發現自 [Motion Library @kittenjamc](https://kittenjam-motion-library.vercel.app)，demo 與文字為自製 |
 
 ## 功能

@@ -5,5 +5,6 @@ import ui from './ui.js'
 import cards from './cards.js'
 import visual from './visual.js'
 import layout from './layout.js'
+import text from './text.js'
 
-export default defineItems('rm', 'remake', [...cursor, ...ui, ...cards, ...visual, ...layout].map((it) => ({ ...it, no: it.ml, group: 'rm' })))
+export default defineItems('rm', 'remake', [...cursor, ...ui, ...cards, ...visual, ...layout, ...text].map((it) => ({ ...it, no: it.ml, group: 'rm' })))

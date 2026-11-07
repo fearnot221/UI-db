@@ -4,5 +4,6 @@ import ui from './ui.js'
 import cards from './cards.js'
 import visual from './visual.js'
 import layout from './layout.js'
+import text from './text.js'
 
-export default { ...cursor, ...ui, ...cards, ...visual, ...layout }
+export default { ...cursor, ...ui, ...cards, ...visual, ...layout, ...text }

@@ -86,7 +86,10 @@ function renderNav() {
   html += '<div class="nav-cat">類型 <span>Types</span></div>'
   for (const t of types) html += navItem(`type:${t.id}`, t.label, items.filter((it) => it.type === t.id).length)
   html += '<div class="nav-cat">來源 <span>Sources</span></div>'
-  for (const c of collections) html += navItem(c.id, c.title, items.filter((it) => it.collection === c.id).length)
+  for (const c of collections) {
+    const n = items.filter((it) => it.collection === c.id).length
+    if (n) html += navItem(c.id, c.title, n)
+  }
   $('#nav').innerHTML = html
 }
 
