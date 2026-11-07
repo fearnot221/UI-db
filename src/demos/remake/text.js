@@ -146,18 +146,45 @@ export default {
   'pixel-dissolve': {
     bg: 'dark',
     run(el) {
-      const N = 14 * 6
-      el.innerHTML = `<div class="rt-center"><div class="rt pixel"><b>PIXEL</b><div class="grid">${'<i></i>'.repeat(N)}</div></div></div>`
-      const cells = [...el.querySelectorAll('.pixel i')]
-      const order = cells.map((_, i) => i).sort(() => Math.random() - 0.5)
-      return every(28, (n) => {
-        const k = n % (N * 2 + 40)
-        if (k < N) cells[order[k]].classList.add('on')
-        else if (k >= N + 20 && k < N * 2 + 20) cells[order[k - N - 20]].classList.remove('on')
+      // 把字畫到離屏 canvas，取樣成方塊；方塊依隨機順序碎落、再依序拼回
+      el.innerHTML = '<canvas class="rt-canvas"></canvas>'
+      const cv = el.firstChild, ctx = cv.getContext('2d')
+      const accent = getComputedStyle(el).getPropertyValue('--accent').trim()
+      let px = [], size = 6
+      const build = () => {
+        const w = (cv.width = el.clientWidth), h = (cv.height = el.clientHeight)
+        const off = document.createElement('canvas'), o = off.getContext('2d', { willReadFrequently: true })
+        off.width = w; off.height = h
+        o.font = `700 ${h * 0.4}px "Space Grotesk", sans-serif`; o.textAlign = 'center'; o.textBaseline = 'middle'; o.fillStyle = '#fff'
+        o.fillText('PIXEL', w / 2, h / 2)
+        size = Math.max(4, Math.round(h / 32))
+        const d = o.getImageData(0, 0, w, h).data
+        px = []
+        for (let y = 0; y < h; y += size) for (let x = 0; x < w; x += size) if (d[((y + size / 2) * w + x + size / 2) * 4 + 3] > 120) px.push({ x, y, t: Math.random(), vx: (Math.random() - 0.3) * 2, vy: -Math.random() * 2 })
+        px.sort((a, b) => a.x - b.x) // 由左往右碎掉
+        px.forEach((p, i) => (p.t = (i / px.length) * 0.7 + Math.random() * 0.3))
+      }
+      build()
+      document.fonts?.ready.then(build)
+      return frames((ms) => {
+        const w = cv.width, h = cv.height
+        ctx.clearRect(0, 0, w, h)
+        const k = (ms % 4800) / 4800 // 0–.15 完整，.15–.5 碎落，.5–.65 消失，.65–1 拼回
+        for (const p of px) {
+          let a = 1, dx = 0, dy = 0
+          const out = (k - 0.15) / 0.35 - p.t * 0.9
+          const back = (k - 0.6) / 0.35 - (1 - p.t) * 0.6
+          if (k > 0.15 && k < 0.6 && out > 0) { const f = Math.min(1, out * 2.2); dx = p.vx * f * 30; dy = (p.vy * f + f * f * 4) * 30; a = 1 - f }
+          if (k >= 0.6) { const f = Math.max(0, Math.min(1, back * 2.4)); a = f; dy = (1 - f) * -size * 3 }
+          if (a <= 0) continue
+          ctx.globalAlpha = a
+          ctx.fillStyle = accent
+          ctx.fillRect(p.x + dx, p.y + dy, size - 1, size - 1)
+        }
+        ctx.globalAlpha = 1
       })
     },
   },
-
   'rotating-words': {
     bg: 'dark',
     run(el) {
@@ -176,16 +203,28 @@ export default {
   'roller-path': {
     bg: 'dark',
     run(el) {
-      const t = [...'INFINITY∞LOOP']
-      const d = 'M 300 90 C 380 10, 480 10, 480 90 C 480 170, 380 170, 300 90 C 220 10, 120 10, 120 90 C 120 170, 220 170, 300 90'
-      el.innerHTML = `<div class="rt-roller"><div class="in"><svg viewBox="0 0 600 180"><path d="${d}"/></svg>${t.map((c, i) => `<span style="offset-path:path('${d}');--i:${i};--n:${t.length}">${c}</span>`).join('')}</div></div>`
-      const box = el.querySelector('.in')
-      const fit = () => (box.style.transform = `scale(${el.clientWidth / 600})`)
-      fit()
-      return every(500, fit)
+      const t = [...'INFINITY · LOOP · ']
+      const d = 'M 300 90 C 380 10, 500 10, 500 90 C 500 170, 380 170, 300 90 C 220 10, 100 10, 100 90 C 100 170, 220 170, 300 90'
+      el.innerHTML = `<div class="rt-roller"><div class="in"><svg viewBox="0 0 600 180"><path class="track" d="${d}"/><path class="glow" d="${d}" pathLength="100"/></svg>${t.map((c) => `<span style="offset-path:path('${d}')">${c}</span>`).join('')}</div></div>`
+      const box = el.querySelector('.in'), spans = [...box.querySelectorAll('span')]
+      const fit = () => {
+        const s = Math.min(el.clientWidth / 620, el.clientHeight / 200)
+        box.style.transform = `translate(${(el.clientWidth - 600 * s) / 2}px, ${(el.clientHeight - 180 * s) / 2}px) scale(${s})`
+      }
+      // 字元在路徑上等距排列，整串沿 ∞ 前進；越接近交叉點越小，營造前後景深
+      return frames((ms) => {
+        fit()
+        const head = (ms / 90) % 100
+        spans.forEach((sp, i) => {
+          const dist = (head + i * 2.6) % 100
+          const depth = 0.75 + 0.35 * Math.abs(Math.sin((dist / 100) * Math.PI * 2))
+          sp.style.offsetDistance = `${dist}%`
+          sp.style.scale = depth
+          sp.style.opacity = 0.45 + depth * 0.5
+        })
+      })
     },
   },
-
   'shuffle-letters': {
     bg: 'dark',
     run(el) {
@@ -204,11 +243,22 @@ export default {
   'text-spiral': {
     bg: 'dark',
     run(el) {
-      const t = [...'旋轉的漩渦不停地轉啊轉啊轉不停']
-      el.innerHTML = `<div class="rt-center"><div class="rt spiral">${t.map((c, i) => `<span style="--a:${i * 32}deg;--r:${4 + i * 1.9}cqh;--s:${0.5 + i * 0.05}">${c}</span>`).join('')}</div></div>`
+      const t = [...'旋轉的漩渦不停地轉啊轉・吸進中心又冒出來・']
+      el.innerHTML = `<div class="rt-center"><div class="rt spiral">${t.map((c) => `<span>${c}</span>`).join('')}</div></div>`
+      const spans = [...el.querySelectorAll('.spiral span')]
+      // 阿基米德螺線：每個字沿螺線往中心流，到中心後從外圈重新出現
+      return frames((ms) => {
+        const R = el.clientHeight * 0.46, n = spans.length
+        spans.forEach((sp, i) => {
+          const k = ((i / n) + ms / 9000) % 1
+          const r = R * (1 - k)
+          const a = k * Math.PI * 7 - ms / 1600
+          sp.style.transform = `translate(${Math.cos(a) * r}px, ${Math.sin(a) * r}px) rotate(${a + Math.PI / 2}rad) scale(${0.35 + (1 - k) * 0.9})`
+          sp.style.opacity = Math.min(1, (1 - k) * 3) * Math.min(1, k * 8)
+        })
+      })
     },
   },
-
   'jitter-settle': css('jitter', '緊張感'),
   'elastic-wave-stretch': cssLight('elastic', 'ELASTIC'),
 
@@ -524,10 +574,59 @@ export default {
   'gravity-tag-pile': {
     bg: 'light',
     run(el) {
-      const tags = ['UI', 'Motion', 'CSS', '設計', 'GSAP', 'Canvas', 'SVG', '動畫', 'React', 'Figma', '互動', '網頁']
-      // shortcut: 預先排好落點，不做真的碰撞；要真物理可換 Matter.js
-      const rows = [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]
-      el.innerHTML = `<div class="rt-pile">${rows.flatMap((row, ri) => row.map((t, ci) => `<span style="--x:${8 + ci * 22 + (ri % 2) * 6}%;--y:${ri};--r:${((t * 37) % 30) - 15}deg;--i:${t}">${tags[t]}</span>`)).join('')}</div>`
+      const tags = ['UI', 'Motion', 'CSS', '設計', 'GSAP', 'Canvas', 'SVG', '動畫', 'React', 'Figma', '互動', '網頁', 'Easing', '轉場']
+      el.innerHTML = `<div class="rt-pile">${tags.map((t, i) => `<span style="--i:${i}">${t}</span>`).join('')}</div>`
+      const nodes = [...el.querySelectorAll('.rt-pile span')]
+      let bodies = []
+      const reset = () => {
+        const W = el.clientWidth
+        bodies = nodes.map((n, i) => ({ n, w: n.offsetWidth, h: n.offsetHeight, x: Math.random() * (W - n.offsetWidth), y: -60 - i * 45, vx: (Math.random() - 0.5) * 2, vy: 0, r: (Math.random() - 0.5) * 30, vr: 0 }))
+      }
+      reset()
+      // 點一下把附近的標籤往上彈
+      el.addEventListener('pointerdown', (e) => {
+        const r = el.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top
+        for (const b of bodies) {
+          const dx = b.x + b.w / 2 - mx, dy = b.y + b.h / 2 - my, d = Math.hypot(dx, dy)
+          if (d < 120) { b.vx += (dx / d) * 6; b.vy -= 8; b.vr += (Math.random() - 0.5) * 20 }
+        }
+      })
+      let start = performance.now()
+      // shortcut: 碰撞只用軸對齊方框（不算旋轉後的形狀），要更真實可換 Matter.js
+      return frames(() => {
+        if (performance.now() - start > 8000) { reset(); start = performance.now() }
+        const W = el.clientWidth, H = el.clientHeight
+        for (const b of bodies) {
+          b.vy += 0.45
+          b.x += b.vx; b.y += b.vy; b.r += b.vr
+          b.vx *= 0.99; b.vr *= 0.9
+          if (b.x < 0) { b.x = 0; b.vx *= -0.5 }
+          if (b.x + b.w > W) { b.x = W - b.w; b.vx *= -0.5 }
+          if (b.y + b.h > H) { b.y = H - b.h; b.vy *= -0.25; b.vx *= 0.8; b.r *= 0.92 }
+        }
+        // 兩兩檢查重疊，沿重疊較少的軸推開
+        for (let k = 0; k < 3; k++)
+          for (let i = 0; i < bodies.length; i++)
+            for (let j = i + 1; j < bodies.length; j++) {
+              const a = bodies[i], c = bodies[j]
+              const ox = Math.min(a.x + a.w, c.x + c.w) - Math.max(a.x, c.x)
+              const oy = Math.min(a.y + a.h, c.y + c.h) - Math.max(a.y, c.y)
+              if (ox <= 0 || oy <= 0) continue
+              if (oy < ox) {
+                const top = a.y < c.y ? a : c, bot = top === a ? c : a
+                top.y -= oy; if (top.vy > 0) top.vy *= -0.2
+                top.r += (top.x + top.w / 2 < bot.x + bot.w / 2 ? -1 : 1) * 0.6
+              } else {
+                const l = a.x < c.x ? a : c, r = l === a ? c : a
+                l.x -= ox / 2; r.x += ox / 2
+                ;[l.vx, r.vx] = [Math.min(l.vx, 0) * 0.5, Math.max(r.vx, 0) * 0.5]
+              }
+            }
+        for (const b of bodies) {
+          b.r = Math.max(-25, Math.min(25, b.r))
+          b.n.style.transform = `translate(${b.x}px, ${b.y}px) rotate(${b.r}deg)`
+        }
+      })
     },
   },
 }
