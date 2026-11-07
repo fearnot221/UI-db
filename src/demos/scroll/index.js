@@ -5,13 +5,13 @@ import { frames, bag } from '../utils.js'
 const hero = (t = 'Scroll ↓') => `<div class="sc-hero">${t}</div>`
 const clamp = (v) => Math.min(1, Math.max(0, v))
 
-function page(el, html, fixed = '') {
+export function page(el, html, fixed = '') {
   el.innerHTML = `${fixed}<div class="sc-view"><div class="sc-page">${html}</div></div>`
   return el.querySelector('.sc-view')
 }
 
 // loop：捲到底後跳回頂端重播（觸發型）；否則上下來回（連動型）
-function autoScroll(view, loop) {
+export function autoScroll(view, loop) {
   let pos = 0, dir = 1, wait = 40, end = false, hover = false
   view.addEventListener('pointerenter', () => (hover = true))
   view.addEventListener('pointerleave', () => { hover = false; pos = view.scrollTop })
@@ -30,7 +30,7 @@ function autoScroll(view, loop) {
 }
 
 // 進入可視範圍加上 .in，離開移除（所以每輪都會重播）
-function reveal(view, onIn) {
+export function reveal(view, onIn) {
   const io = new IntersectionObserver(
     (es) => es.forEach((e) => {
       e.target.classList.toggle('in', e.isIntersecting)
@@ -42,7 +42,7 @@ function reveal(view, onIn) {
   return () => io.disconnect()
 }
 
-function onScroll(view, fn) {
+export function onScroll(view, fn) {
   const h = () => fn(clamp(view.scrollTop / (view.scrollHeight - view.clientHeight || 1)), view.scrollTop)
   view.addEventListener('scroll', h, { passive: true })
   h()

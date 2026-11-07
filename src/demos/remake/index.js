@@ -3,5 +3,6 @@ import cursor from './cursor.js'
 import ui from './ui.js'
 import cards from './cards.js'
 import visual from './visual.js'
+import layout from './layout.js'
 
-export default { ...cursor, ...ui, ...cards, ...visual }
+export default { ...cursor, ...ui, ...cards, ...visual, ...layout }
