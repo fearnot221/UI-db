@@ -2,5 +2,6 @@
 import cursor from './cursor.js'
 import ui from './ui.js'
 import cards from './cards.js'
+import visual from './visual.js'
 
-export default { ...cursor, ...ui, ...cards }
+export default { ...cursor, ...ui, ...cards, ...visual }

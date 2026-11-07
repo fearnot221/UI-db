@@ -3,5 +3,6 @@ import { defineItems } from '../define.js'
 import cursor from './cursor.js'
 import ui from './ui.js'
 import cards from './cards.js'
+import visual from './visual.js'
 
-export default defineItems('rm', 'remake', [...cursor, ...ui, ...cards].map((it) => ({ ...it, no: it.ml, group: 'rm' })))
+export default defineItems('rm', 'remake', [...cursor, ...ui, ...cards, ...visual].map((it) => ({ ...it, no: it.ml, group: 'rm' })))
