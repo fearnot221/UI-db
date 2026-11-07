@@ -47,3 +47,21 @@ export const vmarquee = (text, { dur = 10, reverse = false, cls = '' } = {}) =>
   `<div class="tm-vmq ${cls}"><div class="tm-vmq-track" style="--dur:${dur}s;animation-direction:${reverse ? 'reverse' : 'normal'}"><span>${text}</span><span>${text}</span></div></div>`
 
 export const rand = (arr) => arr[Math.floor(Math.random() * arr.length)]
+
+// 游標位置：有真的滑鼠就跟滑鼠，否則用假游標畫 ∞ 軌跡。fn(x, y, t, real)
+export function pointer(el, fn) {
+  let real = null, until = 0
+  const move = (e) => {
+    const r = el.getBoundingClientRect()
+    real = [e.clientX - r.left, e.clientY - r.top]
+    until = performance.now() + 1500
+  }
+  el.addEventListener('pointermove', move)
+  const stop = frames((t) => {
+    const live = performance.now() < until
+    const w = el.clientWidth, h = el.clientHeight
+    const [x, y] = live ? real : [w / 2 + Math.sin(t / 1300) * w * 0.34, h / 2 + Math.sin(t / 650) * h * 0.28]
+    fn(x, y, t, live)
+  })
+  return () => { stop(); el.removeEventListener('pointermove', move) }
+}

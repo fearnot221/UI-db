@@ -7,9 +7,10 @@ import background12 from './items/background-12.js'
 import scroll12 from './items/scroll-12.js'
 import motionPicks from './items/motion-picks.js'
 import motionLibrary from './items/motion-library.js'
+import remake from './items/remake/index.js'
 
 // 新增收藏集：import 項目檔後加進第一個陣列
-export const items = organize([...textMotion40, ...micro12, ...loading12, ...background12, ...scroll12, ...motionPicks], motionLibrary)
+export const items = organize([...textMotion40, ...micro12, ...loading12, ...background12, ...scroll12, ...motionPicks, ...remake], motionLibrary)
 
 export { collections }
 export { types, timings } from './taxonomy.js'

@@ -107,4 +107,15 @@ export const collections = [
       { id: 'ml-cursor', label: 'CURSOR', zh: '游標' },
     ],
   },
+  {
+    id: 'remake',
+    title: 'Motion Library 重製',
+    en: 'Motion Library Remake',
+    author: 'Motion Library（Hannah @kittenjamc）',
+    external: true,
+    source: 'https://kittenjam-motion-library.vercel.app',
+    savedAt: '2026-11-07',
+    note: '依 Motion Library 的效果清單，由 UI-db 自行重寫 demo、說明與提示詞。每招都附原站版本連結，版權歸原作者所有。',
+    groups: [{ id: 'rm', label: 'REMAKE', zh: '重製' }],
+  },
 ]

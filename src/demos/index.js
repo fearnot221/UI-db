@@ -4,6 +4,7 @@ import loading from './loading/index.js'
 import background from './background/index.js'
 import scroll from './scroll/index.js'
 import motionPicks from './motion-picks/index.js'
+import remake from './remake/index.js'
 
 // collection id → { demoKey: { bg, run(el) } }
 export const demosByCollection = {
@@ -13,6 +14,7 @@ export const demosByCollection = {
   'background-12': background,
   'scroll-12': scroll,
   'motion-picks': motionPicks,
+  remake,
 }
 
 // 每個組別的主色（舞台用）
@@ -32,6 +34,7 @@ export const groupAccent = {
   linked: '#f5d76e',
   'mp-visual': '#ff8fa3',
   'mp-ui': '#9be7ff',
+  rm: '#dcf244',
 }
 
 // 嵌入原站頁面，裁切到預覽區。原站寬 800 時預覽約在 (30, 290)，大小 740×380

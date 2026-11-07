@@ -23,6 +23,7 @@ const byGroup = {
   gradient: ['bg', '循環待機'], pattern: ['bg', '循環待機'],
   trigger: ['scroll', SCROLL], linked: ['scroll', SCROLL],
   'mp-visual': ['svg', '循環待機'], 'mp-ui': ['form', '懸停・點擊'],
+  rm: ['text', '循環待機'],
   'ml-text': ['text'], 'ml-button': ['button'], 'ml-form': ['form'], 'ml-card': ['card'], 'ml-media': ['media'],
   'ml-svg': ['svg'], 'ml-bg': ['bg'], 'ml-layout': ['layout'], 'ml-cursor': ['cursor'],
 }
@@ -32,15 +33,16 @@ const key = (en) => en.toLowerCase().replace(/[^a-z0-9]/g, '')
 // 同名效果只留一筆：優先自製 demo，並連到原站頁面
 export function organize(own, library) {
   const libByKey = new Map(library.map((it) => [key(it.en), it]))
+  const libByNo = new Map(library.map((it) => [it.no, it]))
+  const libType = (it) => (LOADERS.has(key(it.en)) ? 'loading' : byGroup[it.group][0])
+  // 重製版用 ml（原站編號）精準對應，其餘用英文名對應
+  const matchOf = (it) => (it.ml ? libByNo.get(it.ml) : libByKey.get(key(it.en)))
   const merged = own.map((it) => {
-    const lib = libByKey.get(key(it.en))
+    const lib = matchOf(it)
     const [type, timing] = byGroup[it.group]
-    const loading = type === 'loading'
-    return { ...it, type: lib && !loading ? byGroup[lib.group][0] : type, timing: lib ? lib.tags[0] : timing, related: lib?.url }
+    return { ...it, type: lib && type !== 'loading' ? libType(lib) : type, timing: lib ? lib.tags[0] : timing, related: lib?.url }
   })
-  const ownKeys = new Set(own.map((it) => key(it.en)))
-  const rest = library
-    .filter((it) => !ownKeys.has(key(it.en)))
-    .map((it) => ({ ...it, type: LOADERS.has(key(it.en)) ? 'loading' : byGroup[it.group][0], timing: it.tags[0] }))
+  const taken = new Set(own.map(matchOf).filter(Boolean))
+  const rest = library.filter((it) => !taken.has(it)).map((it) => ({ ...it, type: libType(it), timing: it.tags[0] }))
   return [...merged, ...rest].map((it) => (it.timing === SCROLL ? { ...it, type: 'scroll' } : it))
 }

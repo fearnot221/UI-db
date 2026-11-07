@@ -38,7 +38,7 @@ a { color: inherit; }
 [data-g="linked"] { --g: #f5d76e; }
 [data-g="mp-visual"] { --g: #ff8fa3; }
 [data-g="mp-ui"] { --g: #9be7ff; }
-[data-g^="ml-"] { --g: #dcf244; }
+[data-g^="ml-"], [data-g="rm"] { --g: #dcf244; }
 
 /* ── Sidebar ── */
 .side { border-right: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; padding: 22px 14px 16px; overflow-y: auto; }
