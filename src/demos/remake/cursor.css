@@ -66,7 +66,7 @@
 .rc-eyes i { width: 11cqh; height: 11cqh; border-radius: 50%; background: var(--ink); }
 
 /* 257 */
-.rc-fine { position: absolute; inset: 0; display: grid; place-items: center; font: 600 4.5cqh var(--sans, sans-serif); color: #52525b; letter-spacing: .05em; }
+.rc-fine { position: absolute; inset: 0; display: grid; align-content: space-evenly; justify-items: center; padding: 12cqh 0 6cqh; font: 600 3.6cqh var(--sans, sans-serif); color: #71717a; letter-spacing: .05em; }
 .rc-lens { width: 40cqh; height: 40cqh; border-radius: 50%; overflow: hidden; border: .8cqh solid var(--ink); background: #fbfaf6; box-shadow: 0 2cqh 5cqh rgba(0,0,0,.25); }
 .rc-lens-in { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .rc-lens-in .rc-fine { color: var(--ink); }

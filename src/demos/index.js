@@ -58,9 +58,14 @@ export function mountDemo(el, item) {
   }
   el.dataset.bg = demo.bg
   el.style.setProperty('--accent', groupAccent[item.group] || '#ee8fbd')
+  // 舞台元素會重複掛載：demo 直接綁在 el 上的事件，卸載時一併拔掉
+  const ac = new AbortController()
+  el.addEventListener = (t, f, o) => EventTarget.prototype.addEventListener.call(el, t, f, { ...(typeof o === 'object' ? o : { capture: !!o }), signal: ac.signal })
   const cleanup = demo.run(el)
   return () => {
     if (typeof cleanup === 'function') cleanup()
+    ac.abort()
+    delete el.addEventListener
     el.innerHTML = ''
   }
 }

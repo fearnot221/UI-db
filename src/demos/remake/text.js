@@ -132,7 +132,7 @@ export default {
       const spans = [...el.querySelectorAll('.karaoke span')], ball = el.querySelector('.ball'), box = el.querySelector('.karaoke')
       return frames((t) => {
         const k = (t % 4000) / 4000 * (spans.length + 1)
-        const i = Math.min(spans.length - 1, Math.floor(k)), f = k - Math.floor(k)
+        const i = Math.max(0, Math.min(spans.length - 1, Math.floor(k))), f = k - Math.floor(k)
         spans.forEach((s, j) => s.classList.toggle('on', j < k))
         const a = spans[i].getBoundingClientRect(), b = spans[Math.min(spans.length - 1, i + 1)].getBoundingClientRect(), r = box.getBoundingClientRect()
         const x = a.left - r.left + a.width / 2 + (b.left - a.left) * f

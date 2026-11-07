@@ -132,7 +132,7 @@ export default {
   'liquid-fill-icon': {
     bg: 'dark',
     run(el) {
-      el.innerHTML = center(`<div class="rv-battery"><div class="liquid"><svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 V20 H0Z"/></svg></div><b>0%</b></div>`)
+      el.innerHTML = center(`<div class="rv-battery"><div class="tank"><div class="liquid"><svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 V20 H0Z"/></svg></div></div><b>0%</b></div>`)
       const liq = el.querySelector('.liquid'), num = el.querySelector('b')
       return frames((t) => {
         const p = Math.min(1, (t % 5000) / 4000)
@@ -276,8 +276,20 @@ export default {
   'fingerprint-scan': {
     bg: 'dark',
     run(el) {
-      const arcs = [10, 16, 22, 28, 34].map((r, i) => `<path class="rv-fp" style="--i:${i}" d="M${50 - r} ${58} A${r} ${r * 1.15} 0 0 1 ${50 + r} 58 L${50 + r} ${68 + i * 2}"/>`).join('')
-      el.innerHTML = center(`<div class="rv-finger">${svg('0 0 100 100', arcs)}<i class="scan"></i></div>`)
+      // 每條脊線是開口朝下的橢圓弧，中間挖一個缺口，看起來像指紋
+      const ridge = (r, i) => {
+        const seg = (a0, a1) => Array.from({ length: 24 }, (_, k) => {
+          const a = a0 + ((a1 - a0) * k) / 23
+          return `${k ? 'L' : 'M'}${(50 + Math.cos(a) * r).toFixed(1)} ${(56 + Math.sin(a) * r * 1.3).toFixed(1)}`
+        }).join(' ')
+        const gap = Math.PI * (1.1 + ((i * 0.37) % 0.8))
+        const start = Math.PI * (0.78 - i * 0.012), end = Math.PI * (2.22 + i * 0.012)
+        return `<path class="rv-fp" style="--i:${i}" d="${seg(start, gap - 0.12)} ${seg(gap + 0.12, end)}"/>`
+      }
+      const arcs = [4, 8, 12, 16, 20, 24, 28, 32, 36].map(ridge).join('')
+      el.innerHTML = center(`<div class="rv-finger">${svg('0 0 100 110', arcs)}<i class="scan"></i></div><small class="rv-fp-label">掃描中…</small>`)
+      const label = el.querySelector('.rv-fp-label')
+      return every(1000, (n) => (label.textContent = n % 4 === 2 || n % 4 === 3 ? '驗證成功 ✓' : '掃描中…'))
     },
   },
 
@@ -469,21 +481,25 @@ export default {
       let next = 0
       const boom = (x, y) => {
         const hue = Math.random() * 360
-        for (let i = 0; i < 40; i++) {
-          const a = (i / 40) * Math.PI * 2, v = 1.5 + Math.random() * 1.8
-          parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, hue })
+        for (let i = 0; i < 70; i++) {
+          const a = (i / 70) * Math.PI * 2, v = 1.8 + Math.random() * 2.4
+          parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, hue: hue + Math.random() * 40 })
         }
       }
       el.addEventListener('pointerdown', (e) => { const r = el.getBoundingClientRect(); boom(e.clientX - r.left, e.clientY - r.top) })
       return canvas(el, (ctx, w, h, t) => {
-        ctx.fillStyle = 'rgba(8,8,16,.22)'
+        ctx.globalCompositeOperation = 'source-over'
+        ctx.fillStyle = 'rgba(8,8,16,.18)'
         ctx.fillRect(0, 0, w, h)
+        ctx.globalCompositeOperation = 'lighter'
         if (t > next) { boom(w * (0.2 + Math.random() * 0.6), h * (0.2 + Math.random() * 0.35)); next = t + 900 }
         for (let i = parts.length - 1; i >= 0; i--) {
           const p = parts[i]
+          const ox = p.x, oy = p.y
           p.x += p.vx; p.y += p.vy; p.vy += 0.03; p.vx *= 0.985; p.vy *= 0.985; p.life -= 0.012
-          ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${p.life})`
-          ctx.fillRect(p.x, p.y, 2.2, 2.2)
+          ctx.strokeStyle = `hsla(${p.hue}, 95%, ${60 + p.life * 25}%, ${p.life})`
+          ctx.lineWidth = 2.4
+          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(p.x, p.y); ctx.stroke()
           if (p.life <= 0) parts.splice(i, 1)
         }
       })

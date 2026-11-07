@@ -266,7 +266,7 @@ export default {
   'speed-dial-fab': {
     bg: 'light',
     run(el) {
-      el.innerHTML = `<div class="rl-fab">${[['✎', '新增筆記'], ['📷', '拍照'], ['🔗', '連結']].map(([i, t], k) => `<a style="--i:${k}"><em>${t}</em>${i}</a>`).join('')}<button>+</button></div>`
+      el.innerHTML = `<div class="rl-fab">${[['✎', '新增筆記'], ['📷', '拍照'], ['🔗', '連結']].map(([i, t], k) => `<a style="--i:${k}"><em>${t}</em><span>${i}</span></a>`).join('')}<button>+</button></div>`
       const box = el.firstChild
       box.querySelector('button').addEventListener('click', () => box.classList.toggle('on'))
       return toggleEvery(box, 'on', 1600)

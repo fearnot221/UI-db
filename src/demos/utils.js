@@ -15,7 +15,7 @@ export function frames(fn) {
   let id
   const start = performance.now()
   const tick = (now) => {
-    fn(now - start)
+    fn(Math.max(0, now - start)) // rAF 時間戳可能早於 start
     id = requestAnimationFrame(tick)
   }
   id = requestAnimationFrame(tick)

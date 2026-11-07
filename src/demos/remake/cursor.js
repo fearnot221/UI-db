@@ -237,7 +237,8 @@ export default {
   'magnifier-lens': {
     bg: 'light',
     run(el) {
-      const art = '<div class="rc-fine">微小的細節 · Tiny details · 0.5px</div>'
+      const lines = ['微小的細節藏在每個像素裡', 'Tiny details · 0.5px · kerning', '把放大鏡移過來看看', 'Look closer · 字距 0.02em', '細節決定質感 · Pixel perfect']
+      const art = `<div class="rc-fine">${lines.map((t) => `<span>${t}</span>`).join('')}</div>`
       el.innerHTML = `${art}<div class="rc-lens"><div class="rc-lens-in">${art}</div></div>`
       const lens = el.querySelector('.rc-lens')
       const inner = el.querySelector('.rc-lens-in')

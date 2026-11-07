@@ -91,7 +91,8 @@
 /* 195 */
 .rv-battery { position: relative; width: 70cqh; height: 34cqh; border: 1.2cqh solid #ececee; border-radius: 5cqh; padding: 1.5cqh; display: grid; place-items: center; }
 .rv-battery::after { content: ''; position: absolute; right: -4cqh; top: 30%; width: 2.6cqh; height: 40%; border-radius: 0 2cqh 2cqh 0; background: #ececee; }
-.rv-battery .liquid { position: absolute; left: 1.5cqh; right: 1.5cqh; bottom: 1.5cqh; max-height: calc(100% - 3cqh); border-radius: 0 0 2.5cqh 2.5cqh; background: var(--accent); }
+.rv-battery .tank { position: absolute; inset: 1.5cqh; overflow: hidden; border-radius: 2.5cqh; }
+.rv-battery .liquid { position: absolute; left: 0; right: 0; bottom: 0; max-height: calc(100% - 3cqh); background: var(--accent); }
 .rv-battery .liquid svg { position: absolute; left: 0; bottom: 100%; width: 200%; height: 3cqh; animation: rv-slide 1.4s linear infinite; }
 .rv-battery .liquid path { fill: var(--accent); }
 .rv-battery b { position: relative; font: 700 10cqh var(--latin, sans-serif); color: #fff; mix-blend-mode: difference; font-variant-numeric: tabular-nums; }
@@ -216,9 +217,10 @@
 .rv-gears .g2 path { fill: #9be7ff; }
 
 /* 327 */
-.rv-finger { position: relative; width: 50cqh; height: 60cqh; }
+.rv-finger { position: relative; width: 56cqh; height: 66cqh; }
+.rv-fp-label { position: absolute; bottom: 7cqh; left: 0; right: 0; text-align: center; font: 700 4.5cqh var(--sans, sans-serif); color: #a1a1aa; }
 .rv-finger svg { width: 100%; height: 100%; }
-.rv-fp { fill: none; stroke: #4a4a52; stroke-width: 2.4; stroke-linecap: round; animation: rv-fp 4s infinite; animation-delay: calc(var(--i) * .15s); }
+.rv-fp { fill: none; stroke: #4a4a52; stroke-width: 2; stroke-linecap: round; animation: rv-fp 4s infinite; animation-delay: calc(var(--i) * .15s); }
 .rv-finger .scan { position: absolute; left: -10%; right: -10%; height: .8cqh; background: var(--accent); box-shadow: 0 0 4cqh var(--accent); animation: rv-scan 4s ease-in-out infinite; }
 @keyframes rv-fp { 0%, 10% { stroke: #4a4a52; } 30%, 55% { stroke: var(--accent); } 65%, 90% { stroke: #22c55e; } 100% { stroke: #4a4a52; } }
 @keyframes rv-scan { 0% { top: 10%; opacity: 1; } 25% { top: 85%; } 50% { top: 10%; opacity: 1; } 58%, 100% { opacity: 0; } }

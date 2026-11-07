@@ -12,7 +12,7 @@ function flip(nodes, change) {
   change()
   nodes.forEach((n, i) => {
     const last = n.getBoundingClientRect()
-    n.animate([{ transform: `translate(${first[i].left - last.left}px, ${first[i].top - last.top}px) scale(${first[i].width / last.width}, ${first[i].height / last.height})` }, { transform: 'none' }], { duration: 550, easing: 'cubic-bezier(.4,0,.2,1)' })
+    n.animate([{ transform: `translate(${first[i].left - last.left}px, ${first[i].top - last.top}px) scale(${first[i].width / last.width}, ${first[i].height / last.height})`, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }], { duration: 550, easing: 'cubic-bezier(.4,0,.2,1)' })
   })
 }
 
@@ -520,7 +520,7 @@ export default {
   'image-swap-on-hover': {
     bg: 'light',
     run(el) {
-      el.innerHTML = center('<div class="rd-swap"><i class="shoe a"></i><i class="shoe b"></i></div>')
+      el.innerHTML = center(`<div class="rd-swap"><div class="ph">${pic(20, 'a')}${pic(200, 'b')}</div><b>帆布托特包</b><small>NT$ 890</small></div>`)
       return toggleEvery(el.querySelector('.rd-swap'), 'on', 1400)
     },
   },
