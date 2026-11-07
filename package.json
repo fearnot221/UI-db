@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && CLOUDFLARE_ACCOUNT_ID=786dcef12567e51b3a85a4e9a32860d9 npx -y wrangler@4 pages deploy dist --project-name ui-db --branch main --force"
   },
   "devDependencies": {
     "vite": "^6.4.4"

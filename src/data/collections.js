@@ -1,20 +1,9 @@
 // 收藏集（Collection）：每一個來源 / 主題一組。
-// 新增收藏集時，在這裡加一筆，再到 items/ 建立對應的項目檔。
-
-export const categories = [
-  { id: 'text-motion', label: '文字動態', en: 'Text Motion' },
-  { id: 'micro', label: '按鈕與微互動', en: 'Micro-interactions' },
-  { id: 'loading', label: '載入動畫', en: 'Loading' },
-  { id: 'background', label: '背景效果', en: 'Backgrounds' },
-  { id: 'scroll', label: '捲動效果', en: 'Scroll Effects' },
-  { id: 'motion-picks', label: '動態精選', en: 'Motion Picks' },
-  { id: 'motion-library', label: 'Motion Library', en: '331 招' },
-]
+// 新增收藏集時，在這裡加一筆，再到 items/ 建立對應的項目檔；每招的類型由 taxonomy.js 決定。
 
 export const collections = [
   {
     id: 'text-motion-40',
-    category: 'text-motion',
     title: '文字動態 40 招',
     en: 'Text Motion 40',
     author: '@ai_tjb',
@@ -32,7 +21,6 @@ export const collections = [
   },
   {
     id: 'micro-12',
-    category: 'micro',
     title: '按鈕與微互動 12 招',
     en: 'Micro-interactions 12',
     author: 'UI-db',
@@ -46,7 +34,6 @@ export const collections = [
   },
   {
     id: 'loading-12',
-    category: 'loading',
     title: '載入動畫 12 招',
     en: 'Loading 12',
     author: 'UI-db',
@@ -60,7 +47,6 @@ export const collections = [
   },
   {
     id: 'background-12',
-    category: 'background',
     title: '背景效果 12 招',
     en: 'Backgrounds 12',
     author: 'UI-db',
@@ -74,7 +60,6 @@ export const collections = [
   },
   {
     id: 'scroll-12',
-    category: 'scroll',
     title: '捲動效果 12 招',
     en: 'Scroll Effects 12',
     author: 'UI-db',
@@ -88,7 +73,6 @@ export const collections = [
   },
   {
     id: 'motion-picks',
-    category: 'motion-picks',
     title: '動態精選 12 招',
     en: 'Motion Picks 12',
     author: 'Motion Library（Hannah @kittenjamc）',
@@ -103,25 +87,24 @@ export const collections = [
   },
   {
     id: 'motion-library',
-    category: 'motion-library',
-    title: 'Motion Library 331 招',
+    title: 'Motion Library',
     en: 'Motion Library',
     author: 'Hannah @kittenjamc',
     external: true,
     noindex: true,
     source: 'https://kittenjam-motion-library.vercel.app',
     savedAt: '2026-11-02',
-    note: '原站的索引：預覽嵌入自原站，描述與 AI 提示詞請點來源到原站查看。版權歸原作者所有。',
+    note: '原站 331 招的索引，與 UI-db 同名的效果已合併。預覽嵌入自原站，描述與 AI 提示詞請到原站查看。版權歸原作者所有。',
     groups: [
-      { id: 'ml-text', label: 'TEXT', zh: '文字', range: '106' },
-      { id: 'ml-button', label: 'BUTTON', zh: '按鈕', range: '21' },
-      { id: 'ml-form', label: 'FORM', zh: '表單・控制項', range: '17' },
-      { id: 'ml-card', label: 'CARD', zh: '卡片・群組', range: '41' },
-      { id: 'ml-media', label: 'MEDIA', zh: '圖片・媒體', range: '22' },
-      { id: 'ml-svg', label: 'SVG', zh: '圖形・SVG', range: '35' },
-      { id: 'ml-bg', label: 'BG', zh: '背景・氛圍', range: '36' },
-      { id: 'ml-layout', label: 'LAYOUT', zh: '版面・頁面', range: '37' },
-      { id: 'ml-cursor', label: 'CURSOR', zh: '游標', range: '16' },
+      { id: 'ml-text', label: 'TEXT', zh: '文字' },
+      { id: 'ml-button', label: 'BUTTON', zh: '按鈕' },
+      { id: 'ml-form', label: 'FORM', zh: '表單・控制項' },
+      { id: 'ml-card', label: 'CARD', zh: '卡片・群組' },
+      { id: 'ml-media', label: 'MEDIA', zh: '圖片・媒體' },
+      { id: 'ml-svg', label: 'SVG', zh: '圖形・SVG' },
+      { id: 'ml-bg', label: 'BG', zh: '背景・氛圍' },
+      { id: 'ml-layout', label: 'LAYOUT', zh: '版面・頁面' },
+      { id: 'ml-cursor', label: 'CURSOR', zh: '游標' },
     ],
   },
 ]

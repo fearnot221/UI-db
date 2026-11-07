@@ -1,5 +1,5 @@
 import './styles/app.css'
-import { items, collections, categories, collectionById } from './data/index.js'
+import { items, collections, types, timings, collectionById } from './data/index.js'
 import { mountDemo } from './demos/index.js'
 
 const FAV_KEY = 'ui-db:favs'
@@ -11,7 +11,7 @@ const saveFavs = () => {
 }
 
 const state = {
-  view: 'all', // 'all' | 'favs' | collection id
+  view: 'all', // 'all' | 'favs' | 'type:<id>' | collection id
   group: 'all',
   q: '',
   favs: loadFavs(),
@@ -38,7 +38,7 @@ $('#app').innerHTML = `
       <p>我的 UI 效果與工具資料庫</p>
     </div>
     <nav class="nav" id="nav"></nav>
-    <div class="side-foot">${items.length} 筆收藏 · ${collections.length} 個收藏集<br />本站僅協助整理，版權歸原作者所有</div>
+    <div class="side-foot">${items.length} 招 · ${types.length} 類 · ${collections.length} 個來源<br />本站僅協助整理，版權歸原作者所有</div>
   </aside>
   <main class="main">
     <header class="top">
@@ -77,50 +77,56 @@ const stopAll = () => {
 const itemById = Object.fromEntries(items.map((it) => [it.id, it]))
 
 // ── Render ───────────────────────────────────
+const typeOf = (view) => types.find((t) => `type:${t.id}` === view)
+
 function renderNav() {
-  const count = (fn) => items.filter(fn).length
   const navItem = (view, label, n, sub = '') =>
     `<button class="nav-item ${state.view === view ? 'on' : ''}" data-view="${view}"><span>${label}${sub ? `<small>${sub}</small>` : ''}</span><em>${n}</em></button>`
-  let html = navItem('all', '全部', items.length) + navItem('favs', '★ 我的最愛', state.favs.size)
-  for (const cat of categories) {
-    html += `<div class="nav-cat">${cat.label} <span>${cat.en}</span></div>`
-    for (const c of collections.filter((c) => c.category === cat.id))
-      html += navItem(c.id, c.title, count((it) => it.collection === c.id), c.author)
-  }
-  html += `<div class="nav-cat soon">更多分類 <span>coming soon</span></div>`
+  let html = navItem('all', '總覽', items.length) + navItem('favs', '★ 我的最愛', state.favs.size)
+  html += '<div class="nav-cat">類型 <span>Types</span></div>'
+  for (const t of types) html += navItem(`type:${t.id}`, t.label, items.filter((it) => it.type === t.id).length)
+  html += '<div class="nav-cat">來源 <span>Sources</span></div>'
+  for (const c of collections) html += navItem(c.id, c.title, items.filter((it) => it.collection === c.id).length)
   $('#nav').innerHTML = html
-}
-
-function currentCollection() {
-  return collectionById[state.view] || (state.view === 'all' && collections.length === 1 ? collections[0] : null)
 }
 
 function renderHeader() {
   const c = collectionById[state.view]
+  const type = typeOf(state.view)
   if (c) {
     $('#titleArea').innerHTML = `
       <div class="eyebrow">${esc(c.en)} · 收藏於 ${c.savedAt}</div>
       <h1>${esc(c.title)}</h1>
       <p class="note">${esc(c.note)} ${c.external ? `<a href="${c.source}" target="_blank" rel="noopener">來源 ${esc(c.author)} ${icons.link}</a>` : ''}</p>`
+  } else if (type) {
+    $('#titleArea').innerHTML = `<div class="eyebrow">${type.en}</div><h1>${type.label}</h1>
+      <p class="note">用時機篩選，找到這個情境能用的效果</p>`
   } else {
-    const label = state.view === 'favs' ? '我的最愛' : '全部收藏'
-    $('#titleArea').innerHTML = `<div class="eyebrow">UI-db · dashboard / database</div><h1>${label}</h1>
-      <p class="note">${state.view === 'favs' ? '點卡片上的 ★ 加入最愛' : '點任一張卡片看大圖與可直接貼給 AI 的提示詞'}</p>`
+    const favs = state.view === 'favs'
+    $('#titleArea').innerHTML = `<div class="eyebrow">UI-db · dashboard / database</div><h1>${favs ? '我的最愛' : '總覽'}</h1>
+      <p class="note">${favs ? '點卡片上的 ★ 加入最愛' : `${items.length} 招，分成 ${types.length} 類。點任一張卡片看大圖與提示詞`}</p>`
   }
-  const col = currentCollection()
-  const groups = col?.groups || []
-  $('#chips').innerHTML = groups.length
-    ? [`<button class="chip ${state.group === 'all' ? 'on' : ''}" data-group="all">全部</button>`,
-        ...groups.map((g) => `<button class="chip ${state.group === g.id ? 'on' : ''}" data-group="${g.id}" data-g="${g.id}"><b>${g.label}</b> ${g.zh}<small>${g.range}</small></button>`)].join('')
-    : ''
+  const chip = (id, html, attrs = '') => `<button class="chip ${state.group === id ? 'on' : ''}" data-group="${id}" ${attrs}>${html}</button>`
+  if (type) {
+    const inType = items.filter((it) => it.type === type.id)
+    $('#chips').innerHTML = chip('all', '全部') + timings
+      .map((t) => [t, inType.filter((it) => it.timing === t).length])
+      .filter(([, n]) => n)
+      .map(([t, n]) => chip(t, `${t}<small>${n}</small>`))
+      .join('')
+  } else {
+    $('#chips').innerHTML = c ? chip('all', '全部') + c.groups.map((g) => chip(g.id, `<b>${g.label}</b> ${g.zh}${g.range ? `<small>${g.range}</small>` : ''}`, `data-g="${g.id}"`)).join('') : ''
+  }
 }
 
 function filtered() {
   const q = state.q.trim().toLowerCase()
+  const type = typeOf(state.view)
   return items.filter((it) => {
     if (state.view === 'favs' && !state.favs.has(it.id)) return false
     if (collectionById[state.view] && it.collection !== state.view) return false
-    if (state.group !== 'all' && it.group !== state.group) return false
+    if (type && it.type !== type.id) return false
+    if (state.group !== 'all' && (type ? it.timing : it.group) !== state.group) return false
     if (!q) return true
     return [it.zh, it.en, it.desc, it.prompt, ...it.tags, pad(it.no)].join(' ').toLowerCase().includes(q)
   })
@@ -130,9 +136,7 @@ function renderGrid() {
   stopAll()
   const list = filtered()
   $('#empty').hidden = list.length > 0
-  $('#grid').innerHTML = list
-    .map(
-      (it) => `
+  const card = (it) => `
     <article class="card" data-id="${it.id}" data-g="${it.group}" tabindex="0">
       <div class="stage" data-id="${it.id}"></div>
       <span class="en-tag">${esc(it.en)}</span>
@@ -146,8 +150,13 @@ function renderGrid() {
         </div>
       </div>
     </article>`
-    )
-    .join('')
+  // 總覽：每類只放前 6 招，其餘點進該類看
+  $('#grid').innerHTML = state.view === 'all' && !state.q.trim()
+    ? types.map((t) => {
+        const inType = list.filter((it) => it.type === t.id)
+        return `<button class="sec" data-view="type:${t.id}"><b>${t.label}</b><small>${inType.length} 招</small><span>查看全部 →</span></button>${inType.slice(0, 6).map(card).join('')}`
+      }).join('')
+    : list.map(card).join('')
   document.querySelectorAll('#grid .stage').forEach((s) => io.observe(s))
 }
 
@@ -184,6 +193,7 @@ function openModal(id) {
           </div>
         </div>
         ${c.external ? `<a class="src" href="${it.url || c.source}" target="_blank" rel="noopener">來源：${esc(c.author)} ${icons.link}</a>` : ''}
+        ${it.related ? `<a class="src" href="${it.related}" target="_blank" rel="noopener">Motion Library 的版本與提示詞 ${icons.link}</a>` : ''}
       </div>
     </div>`
   m.hidden = false

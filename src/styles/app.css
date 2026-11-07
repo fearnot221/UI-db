@@ -117,6 +117,12 @@ h1 { margin: 6px 0 6px; font-size: 32px; font-weight: 900; letter-spacing: .01em
   border-radius: 8px; padding: 5px 9px; color: var(--muted); white-space: nowrap; transition: all .15s;
 }
 .copy:hover { color: var(--ink); background: var(--g); border-color: var(--g); }
+.sec { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; margin-top: 18px; padding: 0 0 10px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; color: var(--text); }
+.sec:first-child { margin-top: 0; }
+.sec b { font-size: 20px; font-weight: 900; }
+.sec small { color: var(--muted); font-size: 13px; }
+.sec span { margin-left: auto; font-size: 13px; color: var(--muted); }
+.sec:hover span { color: var(--text); }
 .empty { color: var(--muted); text-align: center; padding: 60px 0; }
 
 /* ── Stage（demo 舞台） ── */

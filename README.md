@@ -14,6 +14,14 @@ npm install
 npm run dev
 ```
 
+## 部署
+
+推送到 `main` 會自動部署到 GitHub Pages（ui.fearnot.tw）。另外也可以手動部署一份到 Cloudflare Pages（需先 `npx wrangler login`）：
+
+```bash
+npm run deploy
+```
+
 ## 目前收藏
 
 | 收藏集 | 數量 | 來源 |
@@ -29,7 +37,7 @@ npm run dev
 ## 功能
 
 - 側欄切換收藏集、我的最愛（★ 存在瀏覽器 localStorage）
-- 組別篩選（IMPACT / FLOW / DEPTH / SWITCH / STYLE）與全文搜尋（中文名、英文名、標籤、描述），按 `/` 聚焦搜尋
+- 依類型瀏覽、依時機篩選（分類規則在 `src/data/taxonomy.js`，同名效果自動合併），也能依來源查看；全文搜尋（中文名、英文名、標籤、描述），按 `/` 聚焦搜尋
 - 點卡片開大圖，可「複製提示詞」或「複製名稱」；網址會帶 `#tm-12` 方便直接分享某一招
 - demo 只在捲到畫面內時播放，節省效能
 
@@ -50,7 +58,7 @@ src/
 
 ## 新增一個收藏集
 
-1. 在 `src/data/collections.js` 加一筆 collection（需要新分類就加到 `categories`）。
+1. 在 `src/data/collections.js` 加一筆 collection，並在 `src/data/taxonomy.js` 的 `byGroup` 指定各組別的類型與時機。
 2. 建立 `src/data/items/<id>.js`，用 `defineItems(前綴, 收藏集 id, [...])` 包起來，每筆填 `no / group / zh / en / desc / tags / prompt`（`id`、`demo` 會自動產生）。外部來源的收藏集加 `external: true` 才會顯示來源連結。
 3. 在 `src/data/index.js` import 並加進 `items`。
 4. 在 `src/demos/` 建資料夾寫 demo：`{ [demoKey]: { bg: 'dark' | 'accent' | 'light', run(el) { …; return cleanup } } }`，並在 `src/demos/index.js` 註冊；新組別的主色加到 `groupAccent` 和 `src/styles/app.css` 的 `[data-g]`。
